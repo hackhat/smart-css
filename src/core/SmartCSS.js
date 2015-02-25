@@ -92,9 +92,17 @@ _.extend(SmartCSS.prototype, {
 
     /**
      * Returns multiple classes.
+     * Example:
+     *
+     *     css.getClasses({
+     *         a: true,
+     *         b: false,
+     *         c: true,
+     *     });
+     *     // Will return a string with the class for `a` and `b` only.
      * @param {Object} styleNames Example {returnThisClass: true, dontReturnThisClass: false}
      * @param {Boolean} [asArray=true] If true returns an array, if not returns a string.
-     * @type {String|[String]} depending on
+     * @return {String} The classes' ids. These are the real classes that are attached to the DOM.
      */
     getClasses: function(styleNames, asArray){
         var classesAsArray = [];
