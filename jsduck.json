@@ -1,6 +1,6 @@
 {
     "--": ["./src"],
-    "--title": "selenium-sync API & Docs",
+    "--title": "smart-css API & Docs",
     "--output": "./docs/jsduck"
     // "--guides": "./docs/guides/guides.json"
 }
