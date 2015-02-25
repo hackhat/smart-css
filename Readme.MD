@@ -2,7 +2,7 @@
 
 Write CSS in JavaScript with namespaces, proper names, no conflicts and expected results for react.js. 
 
-Read the **[API](https://rawgit.com/hackhat/smart-css/v0.0.1/docs/jsduck/index.html)**.
+Read the **[API](https://rawgit.com/hackhat/smart-css/v0.0.2/docs/jsduck/index.html)**.
 
 
 
