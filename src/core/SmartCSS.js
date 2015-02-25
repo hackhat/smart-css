@@ -59,6 +59,12 @@ SmartCSS.getDefaultOptions = function(){
 
 
 
+SmartCSS.injectStyles = function(){
+    RCSS.injectAll();
+}
+
+
+
 
 
 _.extend(SmartCSS.prototype, {
