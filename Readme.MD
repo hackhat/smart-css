@@ -82,8 +82,46 @@ All examples expect you to set the setup code before:
     ```
 
 
+### Add a hover style
+
+    ```javascript
+    css.setClass('root', {
+        background: 'red',
+        ':hover': {
+            background: 'green'
+        }
+    })
+    ```
+
+
+
+## Roadmap
+
+### Auto prefix specific vendors
+
+### Enable to make themable styles
+
+The css can't be static to do this. This should be done with some wrapper function which
+receives some options about the theme.
+
+### Find a better way to define data
+
+For example setting the width of an element is done like this:
+
+    width: '22px'
+
+which is not optimal because the 'px'. Now if you want to increase the width by 5px you have to extract the number 22 from the string `22px`, increase 5 and then add the 'px'.
+
+
+
 ## Questions
+
 
 ### Q: If I want to change a style at runtime what should I do?
 
 A: You can add inline styles like this: `style: {color: 'red'}` 
+
+
+## More
+
+This library uses [RCSS](https://github.com/chenglou/RCSS) under the hood. Thanks to [chenglou](https://github.com/chenglou).
