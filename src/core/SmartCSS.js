@@ -1,6 +1,6 @@
 var RCSS      = require('RCSS');
 var _         = require('lodash');
-var RCSSPatch = require('./patches/RCSS');
+var RCSSPatch = require('../RCSSPatches');
 RCSSPatch(RCSS);
 
 
