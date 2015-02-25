@@ -1,0 +1,6 @@
+{
+    "--": ["./src"],
+    "--title": "selenium-sync API & Docs",
+    "--output": "./docs/jsduck"
+    // "--guides": "./docs/guides/guides.json"
+}
