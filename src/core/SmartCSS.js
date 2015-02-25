@@ -8,19 +8,18 @@ RCSSPatch(RCSS);
 
 
 /**
+ * @class core.SmartCSS
  * An utility class which can be used to save CSS styles
  * and get their id. Use an instance per module.
- * @param {[type]} options [description]
+ * @param {Object} options
+ * @param {Boolean} [options.prefixStyleName=true]
+ *        Prefixes all style ids with the style name.
+ *        For example if you you set this to true the class names
+ *        generated will have the prefix the style name and then
+ *        the id.
  */
 var SmartCSS = function(options){
     options = _.extend({
-        /**
-         * Prefixes all style ids with the style name.
-         * For example if you you set this to true the class names
-         * generated will have the prefix the style name and then
-         * the id.
-         * @type {String}
-         */
         prefixStyleName : true,
     }, SmartCSS.getDefaultOptions, options);
 
@@ -30,6 +29,7 @@ var SmartCSS = function(options){
      * The key is the styleName and the value is an object like this:
      * `{className: 'String', style: {color: 'red'}}`
      * @type {Object}
+     * @private
      */
     this.__classes = {};
 }
@@ -38,12 +38,21 @@ var SmartCSS = function(options){
 
 
 
+/**
+ * Sets the global default options. You should really don't change
+ * this.
+ * @static
+ */
 SmartCSS.setDefaultOptions = function(options){
     SmartCSS.__defaultOptions = options;
 }
 
 
 
+/**
+ * Returns the global default options.
+ * @static
+ */
 SmartCSS.getDefaultOptions = function(){
     return SmartCSS.__defaultOptions;
 }
@@ -128,6 +137,9 @@ _.extend(SmartCSS.prototype, {
         this.__classes[styleName] = RCSS.registerClass(def, options);
         return this.__classes[styleName];
     }
+
+
+
 })
 
 
