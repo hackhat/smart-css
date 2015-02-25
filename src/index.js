@@ -1,3 +1,1 @@
-module.exports = {
-    SmartCSS: require('./core/SmartCSS')
-}
+module.exports = require('./core/SmartCSS');
