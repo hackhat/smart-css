@@ -1,6 +1,6 @@
 {
   "name": "smart-css",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "",
   "main": "src/index.js",
   "scripts": {
@@ -18,8 +18,8 @@
     "lodash": "^3.3.1",
     "rcss": "^0.1.4"
   },
-  "repository" :{
-    "type" : "git",
-    "url"  : "https://github.com/hackhat/smart-css.git"
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/hackhat/smart-css.git"
   }
 }
