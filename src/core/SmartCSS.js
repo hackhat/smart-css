@@ -59,6 +59,9 @@ SmartCSS.getDefaultOptions = function(){
 
 
 
+/**
+ * After you add the styles call this function to apply the styles.
+ */
 SmartCSS.injectStyles = function(){
     RCSS.injectAll();
 }

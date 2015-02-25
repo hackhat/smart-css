@@ -1,6 +1,6 @@
 # smart-css
 
-Write CSS in JavaScript with namespaces, proper names, no conflicts and expected results for react.js.
+Write CSS in JavaScript with namespaces, proper names, no conflicts and expected results for react.js. [API](https://rawgit.com/hackhat/smart-css/prod/docs/jsduck/index.html)
 
 
 

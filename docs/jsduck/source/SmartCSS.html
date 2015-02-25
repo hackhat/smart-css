@@ -24,29 +24,29 @@ RCSSPatch(RCSS);
 
 
 
-<span id='SmartCSS'>/**
-</span> * An utility class which can be used to save CSS styles
+<span id='core-SmartCSS'>/**
+</span> * @class core.SmartCSS
+ * An utility class which can be used to save CSS styles
  * and get their id. Use an instance per module.
- * @param {[type]} options [description]
+ * @param {Object} options
+ * @param {Boolean} [options.prefixStyleName=true]
+ *        Prefixes all style ids with the style name.
+ *        For example if you you set this to true the class names
+ *        generated will have the prefix the style name and then
+ *        the id.
  */
 var SmartCSS = function(options){
     options = _.extend({
-<span id='SmartCSS-property-prefixStyleName'>        /**
-</span>         * Prefixes all style ids with the style name.
-         * For example if you you set this to true the class names
-         * generated will have the prefix the style name and then
-         * the id.
-         * @type {String}
-         */
         prefixStyleName : true,
     }, SmartCSS.getDefaultOptions, options);
 
     this.__prefixStyleName = options.prefixStyleName;
 
-<span id='SmartCSS-property-__classes'>    /**
+<span id='core-SmartCSS-property-__classes'>    /**
 </span>     * The key is the styleName and the value is an object like this:
      * `{className: 'String', style: {color: 'red'}}`
      * @type {Object}
+     * @private
      */
     this.__classes = {};
 }
@@ -55,14 +55,32 @@ var SmartCSS = function(options){
 
 
 
+<span id='core-SmartCSS-static-property-'>/**
+</span> * Sets the global default options. You should really don't change
+ * this.
+ * @static
+ */
 SmartCSS.setDefaultOptions = function(options){
     SmartCSS.__defaultOptions = options;
 }
 
 
 
+<span id='core-SmartCSS-static-property-'>/**
+</span> * Returns the global default options.
+ * @static
+ */
 SmartCSS.getDefaultOptions = function(){
     return SmartCSS.__defaultOptions;
+}
+
+
+
+<span id='core-SmartCSS-property-'>/**
+</span> * After you add the styles call this function to apply the styles.
+ */
+SmartCSS.injectStyles = function(){
+    RCSS.injectAll();
 }
 
 
@@ -73,7 +91,7 @@ _.extend(SmartCSS.prototype, {
 
 
 
-<span id='SmartCSS-method-getClass'>    /**
+<span id='core-SmartCSS-method-getClass'>    /**
 </span>     * Gets the style id of a style name.
      * @param  {String} styleName
      * @return {String} The class id. This is the real class that is attached to the DOM.
@@ -89,7 +107,7 @@ _.extend(SmartCSS.prototype, {
 
 
 
-<span id='SmartCSS-property-getClasses'>    /**
+<span id='core-SmartCSS-property-getClasses'>    /**
 </span>     * Returns multiple classes.
      * @param {Object} styleNames Example {returnThisClass: true, dontReturnThisClass: false}
      * @param {Boolean} [asArray=true] If true returns an array, if not returns a string.
@@ -111,7 +129,7 @@ _.extend(SmartCSS.prototype, {
 
 
 
-<span id='SmartCSS-method-getClassesAsMap'>    /**
+<span id='core-SmartCSS-method-getClassesAsMap'>    /**
 </span>     * Returns an object where the key is the friendly class name
      * and the value is an object with 2 keys: className and style.
      * @return {Object}
@@ -122,7 +140,7 @@ _.extend(SmartCSS.prototype, {
 
 
 
-<span id='SmartCSS-method-setClass'>    /**
+<span id='core-SmartCSS-method-setClass'>    /**
 </span>     * Defines a style.
      * @param {String} name The style name, then you can get the style id with `getClass` or `getClasses`.
      * @param {Object} def The style definition `{color: 'red'}` as javascript object.
@@ -145,6 +163,9 @@ _.extend(SmartCSS.prototype, {
         this.__classes[styleName] = RCSS.registerClass(def, options);
         return this.__classes[styleName];
     }
+
+
+
 })
 
 
