@@ -195,20 +195,20 @@
     </style>
 </head>
 <body>
-<div class="header high">
+<div class="header low">
     <h1>Code coverage report for <span class="entity">src\RCSSPatches.js</span></h1>
     <h2>
         
-        Statements: <span class="metric">88.89% <small>(16 / 18)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Statements: <span class="metric">27.78% <small>(5 / 18)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
         
         
-        Branches: <span class="metric">62.5% <small>(5 / 8)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Branches: <span class="metric">0% <small>(0 / 8)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
         
         
-        Functions: <span class="metric">100% <small>(2 / 2)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Functions: <span class="metric">50% <small>(1 / 2)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
         
         
-        Lines: <span class="metric">88.89% <small>(16 / 18)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Lines: <span class="metric">27.78% <small>(5 / 18)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
         
         Ignored: <span class="metric"><span class="ignore-none">none</span></span> &nbsp;&nbsp;&nbsp;&nbsp;
     </h2>
@@ -283,28 +283,28 @@
 <span class="cline-any cline-yes">1</span>
 <span class="cline-any cline-yes">1</span>
 <span class="cline-any cline-yes">1</span>
-<span class="cline-any cline-yes">3</span>
-<span class="cline-any cline-yes">3</span>
-<span class="cline-any cline-yes">3</span>
-<span class="cline-any cline-yes">3</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3</span>
-<span class="cline-any cline-yes">2</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -345,29 +345,29 @@
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">var patch = function(RCSS){
     var global = Function("return this")();
     global.__RCSS_0_i = 0;
-    RCSS.registerClass = function(styleObj, options){
-        options = options || <span class="branch-1 cbranch-no" title="branch not covered" >{};</span>
-        var styleId;
-        <span class="missing-if-branch" title="else path not taken" >E</span>if(options.styleId === void 0){
-            styleId = global.__RCSS_0_i;
+    RCSS.registerClass = <span class="fstat-no" title="function not covered" >function(styleObj, options){</span>
+<span class="cstat-no" title="statement not covered" >        options = options || {};</span>
+<span class="cstat-no" title="statement not covered" >        var styleId;</span>
+<span class="cstat-no" title="statement not covered" >        if(options.styleId === void 0){</span>
+<span class="cstat-no" title="statement not covered" >            styleId = global.__RCSS_0_i;</span>
             // Add a "c" if no prefix supplied.
-            if(options.prefix !== void 0){
-                styleId = options.prefix + styleId;
+<span class="cstat-no" title="statement not covered" >            if(options.prefix !== void 0){</span>
+<span class="cstat-no" title="statement not covered" >                styleId = options.prefix + styleId;</span>
             }else{
-                styleId = 'c' + styleId;
+<span class="cstat-no" title="statement not covered" >                styleId = 'c' + styleId;</span>
             }
-            <span class="missing-if-branch" title="if path not taken" >I</span>if(options.postfix !== void 0){
+<span class="cstat-no" title="statement not covered" >            if(options.postfix !== void 0){</span>
 <span class="cstat-no" title="statement not covered" >                styleId = styleId + options.postfix;</span>
             }
-            global.__RCSS_0_i++;
+<span class="cstat-no" title="statement not covered" >            global.__RCSS_0_i++;</span>
         }else{
 <span class="cstat-no" title="statement not covered" >            styleId = options.styleId;</span>
         }
-        global.__RCSS_0_registry[styleId] = {
+<span class="cstat-no" title="statement not covered" >        global.__RCSS_0_registry[styleId] = {</span>
             className : styleId,
             style     : styleObj
         }
-        return global.__RCSS_0_registry[styleId];
+<span class="cstat-no" title="statement not covered" >        return global.__RCSS_0_registry[styleId];</span>
     }
     // var sha1 = require('sha1');
 &nbsp;
@@ -410,7 +410,7 @@ module.exports = patch;
 
 </div>
 <div class="footer">
-    <div class="meta">Generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Thu Apr 02 2015 16:03:41 GMT+0100 (Hora de Verão de GMT)</div>
+    <div class="meta">Generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Thu Apr 02 2015 17:06:02 GMT+0100 (Hora de Verão de GMT)</div>
 </div>
 
 <script src="../prettify.js"></script>
