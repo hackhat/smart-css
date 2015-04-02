@@ -93,7 +93,7 @@ describe('SmartCSS', function(){
         it('should allow :hover and similar properties', function(){
             var css = new SmartCSS();
             css.setClass('myClassName', {':hover': {color: 'red'}});
-            var expected = '.' + css.getClass('myClassName') + ':hover' + '{color:red;}';
+            var expected = '.' + css.getClass('myClassName') + ':hover{color:red;}';
             var current  = SmartCSS.getStylesString('myClassName');
             expect(expected).to.be.equal(current);
         })
@@ -113,18 +113,39 @@ describe('SmartCSS', function(){
 
 
 
-        // it('should allow nested :hover', function(){
-        //     var css = new SmartCSS();
-        //     css.setClass('myClassName', {':hover': {color: 'red'}});
-        //     var expected = '.' + css.getClass('myClassName') + ':hover' + '{color:red;}';
-        //     var current  = SmartCSS.getStylesString('myClassName');
-        //     console.log(expected)
-        //     console.log(current)
-        //     expect(expected).to.be.equal(current);
-        // })
+        it('should allow proper content variable', function(){
+            var css = new SmartCSS({});
+            css.setClass('a', {content: 'attr(data-hover)'});
+            var expected = '.' + css.getClass('a') + '{content:attr(data-hover);}';
+            var current  = SmartCSS.getStylesString('a');
+            expect(expected).to.be.equal(current);
+        })
 
-        // text css
-        // :hover in @media
+
+
+        it('should allow proper content string', function(){
+            var css = new SmartCSS({});
+            css.setClass('a', {content: '"string"'});
+            var expected = '.' + css.getClass('a') + '{content:"string";}';
+            var current  = SmartCSS.getStylesString('a');
+            expect(expected).to.be.equal(current);
+        })
+
+
+
+        it('should allow nested :hover', function(){
+            var css = new SmartCSS();
+            css.setClass('myClassName', {
+                '@media (max-width: 500px)': {
+                    ':hover': {color: 'red'}
+                }
+            });
+            var expected = '@media (max-width: 500px){.' + css.getClass('myClassName') + ':hover{color:red;}}';
+            var current  = SmartCSS.getStylesString('myClassName');
+            expect(expected).to.be.equal(current);
+        })
+
+
 
     })
 

@@ -1,7 +1,7 @@
 var _                   = require('lodash');
 var tinycolor           = require('tinycolor2');
 var mediaQueryValidator = require('valid-media-queries');
-
+var escapeHTML          = require('escape-html');
 
 
 
@@ -102,7 +102,7 @@ SmartCSS.getStylesString = function(){
     return str;
 }
 
-var rulesToString = function rulesToString(className, styleObj){
+var rulesToString = function(className, styleObj){
     var markup       = '';
     var pseudos      = '';
     var mediaQueries = '';
@@ -133,7 +133,7 @@ var rulesToString = function rulesToString(className, styleObj){
     return markup + pseudos + mediaQueries;
 }
 
-function _rulesToStringHeadless(styleObj){
+var _rulesToStringHeadless = function(styleObj){
     var markup = '';
 
     for(var key in styleObj){
@@ -148,14 +148,14 @@ function _rulesToStringHeadless(styleObj){
     }
     return markup;
 }
-function ruleToString(propName, value){
+var ruleToString = function(propName, value){
     var cssPropName = hyphenateProp(propName);
     if(value instanceof tinycolor) value = value.toHslString();
     return cssPropName + ':' + escapeValueForProp(value, cssPropName) + ';';
 }
 var _uppercasePattern = /([A-Z])/g;
 var msPattern = /^ms-/;
-function hyphenateProp(string){
+var hyphenateProp = function(string){
     // MozTransition -> -moz-transition
     // msTransition -> -ms-transition. Notice the lower case m
     // http://modernizr.com/docs/#prefixed
@@ -164,13 +164,10 @@ function hyphenateProp(string){
         .toLowerCase()
         .replace(msPattern, '-ms-');
 }
-function escapeValueForProp(value, prop){
-    // 'content' is a special property that must be quoted
-    if(prop === 'content'){
-        return '"' + value + '"';
-    }
-
-    return escape(value);
+var escapeValueForProp = function(value, prop){
+    return value;
+    // Still don't know why I should escape values?!
+    // return escapeHTML(value);
 }
 
 
