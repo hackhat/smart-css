@@ -70,7 +70,9 @@ SmartCSS.getDefaultOptions = function(){
  * After you add the styles call this function to apply the styles.
  */
 SmartCSS.injectStyles = function(){
-    RCSS.injectAll();
+    var tag = document.createElement('style');
+    tag.innerHTML = SmartCSS.getStylesString();
+    document.getElementsByTagName('head')[0].appendChild(tag);
 }
 
 
@@ -84,15 +86,12 @@ SmartCSS.deleteStyles = function(){
 /**
  * After you add the styles call this function to get the styles as string.
  */
-SmartCSS.getStylesString = function(){
-    return RCSS.getStylesString();
-}
 
 SmartCSS.getStylesString = function(){
     var registry = SmartCSS.__data.styles;
     var str = '';
-    for (var key in registry) {
-        if (!registry.hasOwnProperty(key)) {
+    for(var key in registry){
+        if(!registry.hasOwnProperty(key)){
             continue;
         }
         str += rulesToString(
@@ -103,60 +102,60 @@ SmartCSS.getStylesString = function(){
     return str;
 }
 
-var rulesToString = function rulesToString(className, styleObj) {
-    var markup             = '';
-    var pseudos            = '';
+var rulesToString = function rulesToString(className, styleObj){
+    var markup       = '';
+    var pseudos      = '';
     var mediaQueries = '';
 
-    for (var key in styleObj) {
-        if (!styleObj.hasOwnProperty(key)) {
+    for(var key in styleObj){
+        if(!styleObj.hasOwnProperty(key)){
             continue;
         }
         // Skipping the special pseudo-selectors and media queries.
-        if (key[0] === ':') {
+        if(key[0] === ':'){
             pseudos += '.' + className + key + '{' +
                 _rulesToStringHeadless(styleObj[key]) + '}';
-        } else if (key.substring(0, 6) === '@media') {
-            if (!mediaQueryValidator(key)) {
+        }else if(key.substring(0, 6) === '@media'){
+            if(!mediaQueryValidator(key)){
                 console.log('%s is not a valid media query.', key);
                 continue;
             }
             mediaQueries += key + '{' + rulesToString(className, styleObj[key]) + '}';
-        } else {
+        }else{
             markup += ruleToString(key, styleObj[key]);
         }
     }
 
-    if (markup !== '') {
+    if(markup !== ''){
         markup = '.' + className + '{' + markup + '}';
     }
 
     return markup + pseudos + mediaQueries;
 }
 
-function _rulesToStringHeadless(styleObj) {
+function _rulesToStringHeadless(styleObj){
     var markup = '';
 
-    for (var key in styleObj) {
-        if (!styleObj.hasOwnProperty(key)) {
+    for(var key in styleObj){
+        if(!styleObj.hasOwnProperty(key)){
             continue;
         }
 
-        if (key[0] === ':' || key.substring(0, 6) === '@media') {
+        if(key[0] === ':' || key.substring(0, 6) === '@media'){
             continue;
         }
         markup += ruleToString(key, styleObj[key]);
     }
     return markup;
 }
-function ruleToString(propName, value) {
+function ruleToString(propName, value){
     var cssPropName = hyphenateProp(propName);
     if(value instanceof tinycolor) value = value.toHslString();
     return cssPropName + ':' + escapeValueForProp(value, cssPropName) + ';';
 }
 var _uppercasePattern = /([A-Z])/g;
 var msPattern = /^ms-/;
-function hyphenateProp(string) {
+function hyphenateProp(string){
     // MozTransition -> -moz-transition
     // msTransition -> -ms-transition. Notice the lower case m
     // http://modernizr.com/docs/#prefixed
@@ -165,9 +164,9 @@ function hyphenateProp(string) {
         .toLowerCase()
         .replace(msPattern, '-ms-');
 }
-function escapeValueForProp(value, prop) {
+function escapeValueForProp(value, prop){
     // 'content' is a special property that must be quoted
-    if (prop === 'content') {
+    if(prop === 'content'){
         return '"' + value + '"';
     }
 
