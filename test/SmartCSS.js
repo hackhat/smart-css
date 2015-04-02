@@ -1,7 +1,7 @@
-var SmartCSS = require('../src/core/SmartCSS');
-var expect   = require('chai').expect;
-var _        = require('lodash');
-
+var SmartCSS  = require('../src/core/SmartCSS');
+var expect    = require('chai').expect;
+var _         = require('lodash');
+var tinycolor = require('tinycolor2');
 
 
 
@@ -22,28 +22,40 @@ describe('SmartCSS', function(){
 
 
 
-    describe('.setClass()', function(){
+    describe('.getClass()', function(){
 
 
 
-        it('should set a class correctly (prefixStyleName=default)', function(){
+        it('should set and get a class correctly (prefixStyleName=default)', function(){
             var css = new SmartCSS({});
             css.setClass('myClassName', {color: 'red'});
-            var expectedCSSString = '.' + css.getClass('myClassName') + '{color:red;}';
-            var currentCSSString  = SmartCSS.getStylesString('myClassName');
-            expect(_.startsWith(expectedCSSString, '.myClassName')).to.be.ok;
-            expect(expectedCSSString).to.be.equal(currentCSSString);
+            var expected = '.' + css.getClass('myClassName') + '{color:red;}';
+            var current  = SmartCSS.getStylesString('myClassName');
+            expect(_.startsWith(expected, '.myClassName')).to.be.ok;
+            expect(expected).to.be.equal(current);
         })
 
 
 
-        it('should set a class correctly (prefixStyleName=false)', function(){
+        it('should set and get a class correctly (prefixStyleName=false)', function(){
             var css = new SmartCSS({prefixStyleName: false});
             css.setClass('myClassName', {color: 'red'});
-            var expectedCSSString = '.' + css.getClass('myClassName') + '{color:red;}';
-            var currentCSSString  = SmartCSS.getStylesString('myClassName');
-            expect(_.startsWith(expectedCSSString, '.myClassName')).to.be.false;
-            expect(expectedCSSString).to.be.equal(currentCSSString);
+            var expected = '.' + css.getClass('myClassName') + '{color:red;}';
+            var current  = SmartCSS.getStylesString('myClassName');
+            expect(_.startsWith(expected, '.myClassName')).to.be.false;
+            expect(expected).to.be.equal(current);
+        })
+
+
+
+        it('should convert tinycolor to a hsl by default', function(){
+            var css = new SmartCSS();
+            css.setClass('myClassName', {color: tinycolor('red')});
+            var expected = '.' + css.getClass('myClassName') + '{color:hsl(0, 100%, 50%);}';
+            var current  = SmartCSS.getStylesString('myClassName');
+            console.log(expected)
+            console.log(current)
+            expect(expected).to.be.equal(current);
         })
 
 
