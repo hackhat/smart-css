@@ -68,6 +68,15 @@ SmartCSS.injectStyles = function(){
 
 
 
+/**
+ * After you add the styles call this function to get the styles as string.
+ */
+SmartCSS.getStylesString = function(){
+    return RCSS.getStylesString();
+}
+
+
+
 
 
 _.extend(SmartCSS.prototype, {

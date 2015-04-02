@@ -115,6 +115,13 @@ For example setting the width of an element is done like this:
 which is not optimal because the 'px'. Now if you want to increase the width by 5px you have to extract the number 22 from the string `22px`, increase 5 and then add the 'px'.
 
 
+## Tests
+
+Run tests:
+
+ - With code coverage: `istanbul cover --root ./src --hook-run-in-context node_modules/mocha/bin/_mocha -- -R spec`
+ - Without code coverage: `mocha`;
+
 
 ## Questions
 
