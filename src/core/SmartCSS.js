@@ -115,8 +115,9 @@ var renderStyleClass = function(styleClass){
     var styleHeader = '.' + styleClass.getClassName();
     if(hover === true){
         styleHeader += ':hover';
-    }else{
-
+    }else if(hover){
+        var smartCss = styleClass.getSmartCss();
+        styleHeader = '.' + smartCss.getClass(hover) + ':hover ' + styleHeader;
     }
 
     var styleFull = styleHeader + '{' + styleBody + '}';
@@ -201,11 +202,12 @@ var escapeValueForProp = function(value, prop){
 
 SmartCSS.registerClass = function(styleObj, options){
     options = _.extend({
-        prefix  : void 0,
-        postfix : void 0,
-        styleId : void 0,
-        hover   : void 0,
-        media   : void 0,
+        prefix   : void 0,
+        postfix  : void 0,
+        styleId  : void 0,
+        hover    : void 0,
+        media    : void 0,
+        smartCss : void 0
     }, options);
     var styleId;
     if(options.styleId === void 0){
@@ -229,6 +231,7 @@ SmartCSS.registerClass = function(styleObj, options){
         styleDef  : styleObj,
         hover     : options.hover,
         media     : options.media,
+        smartCss  : options.smartCss
     })
     SmartCSS.__data.styles[styleId] = styleDef;
     return styleDef;
@@ -311,7 +314,9 @@ _.extend(SmartCSS.prototype, {
      * @param {String} options.media
      */
     setClass: function(styleName, def, options){
-        options = options || {};
+        options = _.extend({
+            smartCss: this
+        }, options)
         if(options.styleId === void 0){
             if(this.__prefixStyleName){
                 var addPrefix = styleName + '-';

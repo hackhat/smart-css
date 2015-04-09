@@ -121,11 +121,12 @@ describe('SmartCSS', function(){
      */
     it('should allow :hover on parent', function(){
         var css = new SmartCSS({});
-        css.setClass('a', {});
+        css.setClass('a', {color: 'red'});
         css.setClass('b', {
             background: 'red'
         }, {hover: 'a'});
-        var expected = '.' + css.getClass('a') + ':hover .' + css.getClass('b') + '{background:red;}';
+        var expected = '.' + css.getClass('a') + '{color:red;}' +
+                       '.' + css.getClass('a') + ':hover .' + css.getClass('b') + '{background:red;}';
         var current  = SmartCSS.getStylesAsString('a');
         expect(current).to.be.equal(expected);
     })
