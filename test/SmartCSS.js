@@ -100,11 +100,9 @@ describe('SmartCSS', function(){
 
     it('should allow @media property', function(){
         var css = new SmartCSS();
-        var mediaString = '@media (max-width: 500px)';
-        var def = {};
-        def[mediaString] = {color: 'red'};
-        css.setClass('myClassName', def);
-        var expected = mediaString + '{.' + css.getClass('myClassName') + '{color:red;}}';
+        var def = {color: 'red'};
+        css.setClass('myClassName', def, {media: 'max-width: 500px'});
+        var expected = '@media (max-width: 500px){.' + css.getClass('myClassName') + '{color:red;}}';
         var current  = SmartCSS.getStylesAsString();
         expect(current).to.be.equal(expected);
     })

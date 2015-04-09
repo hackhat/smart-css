@@ -119,7 +119,14 @@ var renderStyleClass = function(styleClass){
 
     }
 
-    return styleHeader + '{' + styleBody + '}';
+    var styleFull = styleHeader + '{' + styleBody + '}';
+
+    var media = styleClass.getMedia();
+    if(media){
+        styleFull = '@media (' + media + '){' + styleFull + '}'
+    }
+
+    return styleFull;
 }
 
 
@@ -198,6 +205,7 @@ SmartCSS.registerClass = function(styleObj, options){
         postfix : void 0,
         styleId : void 0,
         hover   : void 0,
+        media   : void 0,
     }, options);
     var styleId;
     if(options.styleId === void 0){
@@ -220,6 +228,7 @@ SmartCSS.registerClass = function(styleObj, options){
         className : styleId,
         styleDef  : styleObj,
         hover     : options.hover,
+        media     : options.media,
     })
     SmartCSS.__data.styles[styleId] = styleDef;
     return styleDef;
@@ -299,6 +308,7 @@ _.extend(SmartCSS.prototype, {
      * @param {String} options.postfix
      * @param {String} options.styleId
      * @param {String} options.hover
+     * @param {String} options.media
      */
     setClass: function(styleName, def, options){
         options = options || {};
