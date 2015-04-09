@@ -73,7 +73,7 @@ SmartCSS.getDefaultOptions = function(){
  */
 SmartCSS.injectStyles = function(){
     var tag = document.createElement('style');
-    tag.innerHTML = SmartCSS.getStylesString();
+    tag.innerHTML = SmartCSS.getStylesAsString();
     document.getElementsByTagName('head')[0].appendChild(tag);
 }
 
@@ -88,20 +88,40 @@ SmartCSS.deleteStyles = function(){
 /**
  * After you add the styles call this function to get the styles as string.
  */
-SmartCSS.getStylesString = function(){
+SmartCSS.getStylesAsString = function(){
     var styles = SmartCSS.__data.styles;
     var str = '';
     for(var key in styles){
         if(!styles.hasOwnProperty(key)){
             continue;
         }
-        str += rulesToString(
-            styles[key].getClassName(),
-            styles[key].getStyleDef()
-        );
+        var styleClass = styles[key];
+        str += renderStyleClass(styleClass);
     }
     return str;
 }
+
+var renderStyleClass = function(styleClass){
+    var styleDef = styleClass.getStyleDef();
+    var styleBody = '';
+    for(var key in styleDef){
+        if(!styleDef.hasOwnProperty(key)){
+            continue;
+        }
+        styleBody += ruleToString(key, styleDef[key]);
+    }
+
+    var hover = styleClass.getHover();
+    var styleHeader = '.' + styleClass.getClassName();
+    if(hover === true){
+        styleHeader += ':hover';
+    }else{
+
+    }
+
+    return styleHeader + '{' + styleBody + '}';
+}
+
 
 var rulesToString = function(className, styleObj){
     var markup       = '';
@@ -176,7 +196,8 @@ SmartCSS.registerClass = function(styleObj, options){
     options = _.extend({
         prefix  : void 0,
         postfix : void 0,
-        styleId : void 0
+        styleId : void 0,
+        hover   : void 0,
     }, options);
     var styleId;
     if(options.styleId === void 0){
@@ -197,7 +218,8 @@ SmartCSS.registerClass = function(styleObj, options){
     }
     var styleDef = new StyleClass({
         className : styleId,
-        styleDef  : styleObj
+        styleDef  : styleObj,
+        hover     : options.hover,
     })
     SmartCSS.__data.styles[styleId] = styleDef;
     return styleDef;

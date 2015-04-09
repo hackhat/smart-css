@@ -27,9 +27,9 @@ describe('SmartCSS', function(){
         var css = new SmartCSS({});
         css.setClass('myClassName', {color: 'red'});
         var expected = '.' + css.getClass('myClassName') + '{color:red;}';
-        var current  = SmartCSS.getStylesString('myClassName');
+        var current  = SmartCSS.getStylesAsString();
         expect(_.startsWith(expected, '.myClassName')).to.be.ok;
-        expect(expected).to.be.equal(current);
+        expect(current).to.be.equal(expected);
     })
 
 
@@ -38,22 +38,22 @@ describe('SmartCSS', function(){
         var css = new SmartCSS({prefixStyleName: false});
         css.setClass('myClassName', {color: 'red'});
         var expected = '.' + css.getClass('myClassName') + '{color:red;}';
-        var current  = SmartCSS.getStylesString('myClassName');
+        var current  = SmartCSS.getStylesAsString();
         expect(_.startsWith(expected, '.myClassName')).to.be.false;
-        expect(expected).to.be.equal(current);
+        expect(current).to.be.equal(expected);
     })
 
 
 
-    // RCSS deletes the styles after you call `getStylesString`.
+    // RCSS deletes the styles after you call `getStylesAsString`.
     it('should not the delete the current css after you get it', function(){
         var css = new SmartCSS({});
         css.setClass('myClassName', {color: 'red'});
         var expected = '.' + css.getClass('myClassName') + '{color:red;}';
-        var current  = SmartCSS.getStylesString('myClassName');
-        current      = SmartCSS.getStylesString('myClassName'); // Get twice to check if it works.
+        var current  = SmartCSS.getStylesAsString();
+        current      = SmartCSS.getStylesAsString(); // Get twice to check if it works.
         expect(_.startsWith(expected, '.myClassName')).to.be.ok;
-        expect(expected).to.be.equal(current);
+        expect(current).to.be.equal(expected);
     })
 
 
@@ -62,8 +62,8 @@ describe('SmartCSS', function(){
         var css = new SmartCSS();
         css.setClass('myClassName', {color: tinycolor('red')});
         var expected = '.' + css.getClass('myClassName') + '{color:hsl(0, 100%, 50%);}';
-        var current  = SmartCSS.getStylesString('myClassName');
-        expect(expected).to.be.equal(current);
+        var current  = SmartCSS.getStylesAsString();
+        expect(current).to.be.equal(expected);
     })
 
 
@@ -72,8 +72,8 @@ describe('SmartCSS', function(){
         var css = new SmartCSS();
         css.setClass('myClassName', {color: 'hsl(0, 100%, 50%)'});
         var expected = '.' + css.getClass('myClassName') + '{color:hsl(0, 100%, 50%);}';
-        var current  = SmartCSS.getStylesString('myClassName');
-        expect(expected).to.be.equal(current);
+        var current  = SmartCSS.getStylesAsString();
+        expect(current).to.be.equal(expected);
     })
 
 
@@ -82,17 +82,18 @@ describe('SmartCSS', function(){
         var css = new SmartCSS();
         css.setClass('myClassName', {color: '#FF0000'});
         var expected = '.' + css.getClass('myClassName') + '{color:#FF0000;}';
-        var current  = SmartCSS.getStylesString('myClassName');
-        expect(expected).to.be.equal(current);
+        var current  = SmartCSS.getStylesAsString();
+        expect(current).to.be.equal(expected);
     })
 
+    // Add multiple styles
 
     it('should allow :hover and similar properties', function(){
         var css = new SmartCSS();
-        css.setClass('myClassName', {':hover': {color: 'red'}});
+        css.setClass('myClassName', {color: 'red'}, {hover: true});
         var expected = '.' + css.getClass('myClassName') + ':hover{color:red;}';
-        var current  = SmartCSS.getStylesString('myClassName');
-        expect(expected).to.be.equal(current);
+        var current  = SmartCSS.getStylesAsString();
+        expect(current).to.be.equal(expected);
     })
 
 
@@ -104,22 +105,8 @@ describe('SmartCSS', function(){
         def[mediaString] = {color: 'red'};
         css.setClass('myClassName', def);
         var expected = mediaString + '{.' + css.getClass('myClassName') + '{color:red;}}';
-        var current  = SmartCSS.getStylesString('myClassName');
-        expect(expected).to.be.equal(current);
-    })
-
-
-
-    it('should allow nested :hover', function(){
-        var css = new SmartCSS();
-        css.setClass('myClassName', {
-            '@media (max-width: 500px)': {
-                ':hover': {color: 'red'}
-            }
-        });
-        var expected = '@media (max-width: 500px){.' + css.getClass('myClassName') + ':hover{color:red;}}';
-        var current  = SmartCSS.getStylesString('myClassName');
-        expect(expected).to.be.equal(current);
+        var current  = SmartCSS.getStylesAsString();
+        expect(current).to.be.equal(expected);
     })
 
 
@@ -129,8 +116,8 @@ describe('SmartCSS', function(){
         var css = new SmartCSS({});
         css.setClass('a', {content: 'attr(data-hover)'});
         var expected = '.' + css.getClass('a') + '{content:attr(data-hover);}';
-        var current  = SmartCSS.getStylesString('a');
-        expect(expected).to.be.equal(current);
+        var current  = SmartCSS.getStylesAsString();
+        expect(current).to.be.equal(expected);
     })
 
 
@@ -139,8 +126,8 @@ describe('SmartCSS', function(){
         var css = new SmartCSS({});
         css.setClass('a', {content: '"string"'});
         var expected = '.' + css.getClass('a') + '{content:"string";}';
-        var current  = SmartCSS.getStylesString('a');
-        expect(expected).to.be.equal(current);
+        var current  = SmartCSS.getStylesAsString('a');
+        expect(current).to.be.equal(expected);
     })
 
 
@@ -156,14 +143,13 @@ describe('SmartCSS', function(){
      */
     it('should allow :hover on parent', function(){
         var css = new SmartCSS({});
-        var sc1 = css.setClass('a', {});
+        css.setClass('a', {});
         css.setClass('b', {
             background: 'red'
         }, {hover: 'a'});
-
-        var expected = '.' + css.getClass('a') + '{content:"string";}';
-        var current  = SmartCSS.getStylesString('a');
-        expect(expected).to.be.equal(current);
+        var expected = '.' + css.getClass('a') + ':hover .' + css.getClass('b') + '{background:red;}';
+        var current  = SmartCSS.getStylesAsString('a');
+        expect(current).to.be.equal(expected);
     })
 
 
