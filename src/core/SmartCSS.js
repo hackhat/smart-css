@@ -2,6 +2,8 @@ var _                   = require('lodash');
 var tinycolor           = require('tinycolor2');
 var mediaQueryValidator = require('valid-media-queries');
 var escapeHTML          = require('escape-html');
+var StyleClass          = require('./StyleClass');
+
 
 
 
@@ -86,17 +88,16 @@ SmartCSS.deleteStyles = function(){
 /**
  * After you add the styles call this function to get the styles as string.
  */
-
 SmartCSS.getStylesString = function(){
-    var registry = SmartCSS.__data.styles;
+    var styles = SmartCSS.__data.styles;
     var str = '';
-    for(var key in registry){
-        if(!registry.hasOwnProperty(key)){
+    for(var key in styles){
+        if(!styles.hasOwnProperty(key)){
             continue;
         }
         str += rulesToString(
-            registry[key].className,
-            registry[key].style
+            styles[key].getClassName(),
+            styles[key].getStyleDef()
         );
     }
     return str;
@@ -194,10 +195,10 @@ SmartCSS.registerClass = function(styleObj, options){
     }else{
         styleId = options.styleId;
     }
-    var styleDef = {
+    var styleDef = new StyleClass({
         className : styleId,
-        style     : styleObj
-    }
+        styleDef  : styleObj
+    })
     SmartCSS.__data.styles[styleId] = styleDef;
     return styleDef;
 }
@@ -221,7 +222,7 @@ _.extend(SmartCSS.prototype, {
             console.warn('Class "' + styleName + '" not set.');
             return '';
         }
-        return this.__classes[styleName].className;
+        return this.__classes[styleName].getClassName();
     },
 
 
@@ -275,6 +276,7 @@ _.extend(SmartCSS.prototype, {
      * @param {String} options.prefix
      * @param {String} options.postfix
      * @param {String} options.styleId
+     * @param {String} options.hover
      */
     setClass: function(styleName, def, options){
         options = options || {};

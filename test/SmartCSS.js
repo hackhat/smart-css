@@ -145,4 +145,27 @@ describe('SmartCSS', function(){
 
 
 
+    /**
+     * Sometimes you have this hierarchy:
+     *
+     *  - li
+     *   - a
+     *
+     * And you want to change the `a` element background when
+     * `li` element is hovered.
+     */
+    it('should allow :hover on parent', function(){
+        var css = new SmartCSS({});
+        var sc1 = css.setClass('a', {});
+        css.setClass('b', {
+            background: 'red'
+        }, {hover: 'a'});
+
+        var expected = '.' + css.getClass('a') + '{content:"string";}';
+        var current  = SmartCSS.getStylesString('a');
+        expect(expected).to.be.equal(current);
+    })
+
+
+
 })
