@@ -127,7 +127,7 @@ describe('SmartCSS', function(){
 
 
 
-    describe('should allow pseudo classes', function(){
+    describe('should allow pseudo classes/elements', function(){
 
 
 
@@ -136,6 +136,17 @@ describe('SmartCSS', function(){
             css.setClass('.myClassName:hover', {color: 'red'});
             var expected = '.' + css.getClass('myClassName') + ':hover{color:red;}';
             var current  = SmartCSS.getStylesAsString();
+            expect(current).to.be.equal(expected);
+        })
+
+
+
+        it.only('should allow pseudo elements like (::first-line)', function(){
+            var css = new SmartCSS();
+            css.setClass('.a::first-line', {color: 'red'});
+            var expected = '.' + css.getClass('myClassName') + '::first-line{color:red;}';
+            var current  = SmartCSS.getStylesAsString();
+            console.log(current)
             expect(current).to.be.equal(expected);
         })
 
@@ -178,7 +189,7 @@ describe('SmartCSS', function(){
 
 
 
-        it.only('should throw error if previous selector segment has not been defined', function(){
+        it('should throw error if previous selector segment has not been defined', function(){
             var css = new SmartCSS({});
             expect(css.setClass.bind(css, '.a .b', {})).to.throw(Error, 'Ancestor not defined.');
         })

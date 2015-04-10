@@ -369,9 +369,13 @@ _.extend(SmartCSS.prototype, {
         var selectorObject = Slick.parse(selector);
         validateSelectorObject(selectorObject);
         selectorObject = selectorObject[0];
-        console.log(selectorObject)
+        // console.log(selectorObject)
         // Checks whenever ancestors are defined.
-        _.forEach(selectorObject, function(segment){
+        _.forEach(selectorObject, function(segment, i){
+            // The last one obviously is not yet added to the set, therefore
+            // no need to test it.
+            var last = selectorObject.length - 1 === i;
+            if(last) return;
             if(this.getClass(segment.classList[0]) === ''){
                 throw new Error('Ancestor not defined.')
             }
