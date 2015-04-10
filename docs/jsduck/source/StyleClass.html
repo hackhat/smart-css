@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <title>The source code</title>
+  <link href="../resources/prettify/prettify.css" type="text/css" rel="stylesheet" />
+  <script type="text/javascript" src="../resources/prettify/prettify.js"></script>
+  <style type="text/css">
+    .highlight { display: block; background-color: #ddd; }
+  </style>
+  <script type="text/javascript">
+    function highlight() {
+      document.getElementById(location.hash.replace(/#/, "")).className = "highlight";
+    }
+  </script>
+</head>
+<body onload="prettyPrint(); highlight();">
+  <pre class="prettyprint lang-js">var _ = require('lodash');
+
+
+
+
+<span id='core-StyleClass'>/**
+</span> * @class core.StyleClass
+ */
+var StyleClass = function(options){
+    options = _.extend({
+        className      : void 0,
+        styleDef       : void 0,
+        selectorObject : void 0,
+        media          : void 0,
+    }, options);
+    this.__className      = options.className;
+    this.__styleDef       = options.styleDef;
+    this.__media          = options.media;
+    this.__selectorObject = options.selectorObject;
+}
+
+
+
+
+
+_.extend(StyleClass.prototype, {
+
+
+
+    // This is the class Id. Should be called like this.
+    getClassName: function(){
+        return this.__className;
+    },
+
+
+
+    getStyleDef: function(){
+        return this.__styleDef;
+    },
+
+
+
+    getSelectorObject: function(){
+        return this.__selectorObject;
+    },
+
+
+
+    getMedia: function(){
+        return this.__media;
+    }
+
+
+
+})
+
+
+
+
+
+module.exports = StyleClass;
+</pre>
+</body>
+</html>

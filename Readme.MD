@@ -1,8 +1,8 @@
-# smart-css [![Build Status](https://travis-ci.org/hackhat/smart-css.svg?branch=dev)](https://travis-ci.org/hackhat/smart-css) [![Coverage Status](https://coveralls.io/repos/hackhat/smart-css/badge.svg?branch=dev)](https://coveralls.io/r/hackhat/smart-css?branch=dev)
+# smart-css [![Build Status](https://travis-ci.org/hackhat/smart-css.svg?branch=prod)](https://travis-ci.org/hackhat/smart-css) [![Coverage Status](https://coveralls.io/repos/hackhat/smart-css/badge.svg?branch=prod)](https://coveralls.io/r/hackhat/smart-css?branch=prod)
 
 Write CSS in JavaScript with namespaces, proper names, no conflicts and expected results for react.js. 
 
-Read the **[API](https://rawgit.com/hackhat/smart-css/v0.0.6/docs/jsduck/index.html)**.
+Read the **[API](https://rawgit.com/hackhat/smart-css/v1.0.0/docs/jsduck/index.html)**.
 
 
 
@@ -108,11 +108,11 @@ All examples expect you to set the setup code before:
 ### Add a hover style
 
     ```javascript
-    css.setClass('root', {
-        background: 'red',
-        ':hover': {
-            background: 'green'
-        }
+    css.setClass('.root', {
+        background: 'red'
+    })
+    css.setClass('.root:hover', {
+        background: 'blue'
     })
     ```
 
@@ -154,4 +154,4 @@ A: You can add inline styles like this: `style: {color: 'red'}`
 
 ## More
 
-This library uses [RCSS](https://github.com/chenglou/RCSS) under the hood. Thanks to [chenglou](https://github.com/chenglou).
+This library is inspired from [RCSS](https://github.com/chenglou/RCSS). Thanks to [chenglou](https://github.com/chenglou).

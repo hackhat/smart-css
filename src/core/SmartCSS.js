@@ -4,7 +4,6 @@ var StyleClass = require('./StyleClass');
 var Slick      = require('slick');
 var util       = require('util');
 
-// console.log(util.inspect(Slick.parse('.a:hover .basda2-12::select'), {depth:12}));
 
 
 

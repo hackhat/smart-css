@@ -1,7 +1,7 @@
 {
   "name": "smart-css",
-  "version": "v1.0.0",
-  "description": "",
+  "version": "1.0.0",
+  "description": "Write CSS in JavaScript with namespaces, proper names, no conflicts and expected results for react.js. ",
   "main": "src/index.js",
   "scripts": {
     "test": "istanbul cover --root ./src --hook-run-in-context node_modules/mocha/bin/_mocha -- -R spec",
