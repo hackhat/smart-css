@@ -5,5 +5,7 @@ node_js:
   - "0.10"
   - "iojs"
   - "iojs-v1.0.4"
+before_install:
+  - npm install istanbul -g
 script:
   - npm test
