@@ -157,11 +157,12 @@ describe('SmartCSS', function(){
 
 
 
-    it.only('should be able to render the childrens\' context', function(){
+    it('should be able to render the childrens\' context', function(){
         var cssParent = new SmartCSS({});
         cssParent.setClass('.a', {color: 'red'});
         var cssChild = new SmartCSS({});
         cssChild.setClass('.a', {color: 'red'});
+        cssParent.addChildContext(cssChild);
         var expected = '.' + cssParent.getClass('a') + '{color:red;}' +
                        '.' + cssChild.getClass('a')  + '{color:red;}';
         var current  = cssParent.getStylesAsString();

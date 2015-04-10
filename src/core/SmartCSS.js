@@ -32,6 +32,7 @@ var SmartCSS = function(options){
     }, SmartCSS.getDefaultOptions, options);
 
     this.__prefixClassId = options.prefixClassId;
+    this.__childContexts = [];
 
     /**
      * The key is the styleName and the value is an object like this:
@@ -277,6 +278,9 @@ _.extend(SmartCSS.prototype, {
         this.getStyleClasses().forEach(function(styleClass){
             str.push(renderStyleClass(styleClass, classNamesAsMap));
         });
+        this.__childContexts.forEach(function(context){
+            str.push(context.getStylesAsString());
+        })
         return str.join('');
     },
 
@@ -287,8 +291,9 @@ _.extend(SmartCSS.prototype, {
      * singleton.
      * @param {core.SmartCSS} smartCSS
      */
-    addChild: function(smartCSS){
-
+    addChildContext: function(smartCSS){
+        if(_.includes(this.__childContexts, smartCSS)) throw new Error('The same child context already exists')
+        this.__childContexts.push(smartCSS);
     }
 
 
