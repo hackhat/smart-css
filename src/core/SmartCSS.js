@@ -122,81 +122,6 @@ SmartCSS.getStylesAsString = function(){
 
 
 
-var renderStyleClass = function(styleClass, classNamesAsMap){
-    var styleDef = styleClass.getStyleDef();
-    var styleBody = '';
-    for(var key in styleDef){
-        styleBody += ruleToString(key, styleDef[key]);
-    }
-    var styleHeader = renderSelectorObject(styleClass.getSelectorObject(), classNamesAsMap);
-    var styleFull = styleHeader + '{' + styleBody + '}';
-    var media = styleClass.getMedia();
-    if(media){
-        styleFull = '@media (' + media + '){' + styleFull + '}'
-    }
-    return styleFull;
-}
-
-
-
-/**
- * Renders a css header definition from the selectorObject
- * and a classMap. The classMap is needed to replace the class
- * names from the selectorObject.
- */
-var renderSelectorObject = function(selectorObject, classMap){
-    var str = [];
-    var getClassName = function(classId){
-        return classMap[classId];
-    }
-    // console.log('>>',selectorObject)
-    _.forEach(selectorObject, function(segment, i){
-        if(i !== 0) str.push(segment.combinator);
-        str.push('.' + getClassName(segment.classList[0]));
-        _.forEach(segment.pseudos, function(pseudo){
-            if(pseudo.type === 'class')   str.push(':')
-            if(pseudo.type === 'element') str.push('::')
-            str.push(pseudo.name);
-            if(pseudo.value/* !== void 0 || pseudo.value !== null*/){
-                str.push('(' + pseudo.value + ')');
-            }
-        })
-    })
-    return str.join('');
-}
-
-
-
-var ruleToString = function(propName, value){
-    var cssPropName = hyphenateProp(propName);
-    if(value instanceof tinycolor) value = value.toHslString();
-    return cssPropName + ':' + escapeValueForProp(value, cssPropName) + ';';
-}
-
-
-
-var _uppercasePattern = /([A-Z])/g;
-var msPattern = /^ms-/;
-var hyphenateProp = function(string){
-    // MozTransition -> -moz-transition
-    // msTransition -> -ms-transition. Notice the lower case m
-    // http://modernizr.com/docs/#prefixed
-    // thanks a lot IE
-    return string.replace(_uppercasePattern, '-$1')
-        .toLowerCase()
-        .replace(msPattern, '-ms-');
-}
-
-
-
-var escapeValueForProp = function(value, prop){
-    return value;
-    // Still don't know why I should escape values?!
-    // return escapeHTML(value);
-}
-
-
-
 
 
 _.extend(SmartCSS.prototype, {
@@ -381,6 +306,81 @@ var validateSelectorObject = function(selectorObject){
     _.forEach(selectorObject[0], function(segment){
         if(segment.classList.length > 1) throw new Error('Doesn\'t accept multiple classes at once.')
     })
+}
+
+
+
+var renderStyleClass = function(styleClass, classNamesAsMap){
+    var styleDef = styleClass.getStyleDef();
+    var styleBody = '';
+    for(var key in styleDef){
+        styleBody += ruleToString(key, styleDef[key]);
+    }
+    var styleHeader = renderSelectorObject(styleClass.getSelectorObject(), classNamesAsMap);
+    var styleFull = styleHeader + '{' + styleBody + '}';
+    var media = styleClass.getMedia();
+    if(media){
+        styleFull = '@media (' + media + '){' + styleFull + '}'
+    }
+    return styleFull;
+}
+
+
+
+/**
+ * Renders a css header definition from the selectorObject
+ * and a classMap. The classMap is needed to replace the class
+ * names from the selectorObject.
+ */
+var renderSelectorObject = function(selectorObject, classMap){
+    var str = [];
+    var getClassName = function(classId){
+        return classMap[classId];
+    }
+    // console.log('>>',selectorObject)
+    _.forEach(selectorObject, function(segment, i){
+        if(i !== 0) str.push(segment.combinator);
+        str.push('.' + getClassName(segment.classList[0]));
+        _.forEach(segment.pseudos, function(pseudo){
+            if(pseudo.type === 'class')   str.push(':')
+            if(pseudo.type === 'element') str.push('::')
+            str.push(pseudo.name);
+            if(pseudo.value/* !== void 0 || pseudo.value !== null*/){
+                str.push('(' + pseudo.value + ')');
+            }
+        })
+    })
+    return str.join('');
+}
+
+
+
+var ruleToString = function(propName, value){
+    var cssPropName = hyphenateProp(propName);
+    if(value instanceof tinycolor) value = value.toHslString();
+    return cssPropName + ':' + escapeValueForProp(value, cssPropName) + ';';
+}
+
+
+
+var _uppercasePattern = /([A-Z])/g;
+var msPattern = /^ms-/;
+var hyphenateProp = function(string){
+    // MozTransition -> -moz-transition
+    // msTransition -> -ms-transition. Notice the lower case m
+    // http://modernizr.com/docs/#prefixed
+    // thanks a lot IE
+    return string.replace(_uppercasePattern, '-$1')
+        .toLowerCase()
+        .replace(msPattern, '-ms-');
+}
+
+
+
+var escapeValueForProp = function(value, prop){
+    return value;
+    // Still don't know why I should escape values?!
+    // return escapeHTML(value);
 }
 
 
