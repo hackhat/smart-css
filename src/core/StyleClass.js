@@ -10,15 +10,15 @@ var StyleClass = function(options){
     options = _.extend({
         className : void 0,
         styleDef  : void 0,
-        hover     : void 0,
+        pseudo    : void 0,
         media     : void 0,
         // Instace of smartCss
         smartCss  : void 0,
     }, options);
     this.__className = options.className;
     this.__styleDef  = options.styleDef;
-    this.__hover     = options.hover;
     this.__media     = options.media;
+    this.__pseudo    = options.pseudo;
     this.__smartCss  = options.smartCss;
 }
 
@@ -43,8 +43,8 @@ _.extend(StyleClass.prototype, {
 
 
 
-    getHover: function(){
-        return this.__hover;
+    getPseudo: function(){
+        return this.__pseudo;
     },
 
 

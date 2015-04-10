@@ -3,7 +3,10 @@ var tinycolor           = require('tinycolor2');
 var mediaQueryValidator = require('valid-media-queries');
 var escapeHTML          = require('escape-html');
 var StyleClass          = require('./StyleClass');
+var Slick               = require('slick');
+var util                = require('util');
 
+// console.log(util.inspect(Slick.parse('.a:hover .basda2-12::select'), {depth:12}));
 
 
 
@@ -12,8 +15,15 @@ var StyleClass          = require('./StyleClass');
  * @class core.SmartCSS
  * An utility class which can be used to save CSS styles
  * and get their id. Use an instance per module.
+ *
+ * Definitions:
+ *  - Class id: is the name in smart-css, normally is semantic and needs context; A class
+ *              id only matters if has a SmartCSS instance associated. Alone means nothing.
+ *  - Class name: is the real css class, normally is ugly and short; Doesn't include the pseudo
+ *                part or the dot prefix.
+ *
  * @param {Object} options
- * @param {Boolean} [options.prefixStyleName=true]
+ * @param {Boolean} [options.prefixClassId=true]
  *        Prefixes all style ids with the style name.
  *        For example if you you set this to true the class names
  *        generated will have the prefix the style name and then
@@ -21,10 +31,10 @@ var StyleClass          = require('./StyleClass');
  */
 var SmartCSS = function(options){
     options = _.extend({
-        prefixStyleName : true,
+        prefixClassId : true,
     }, SmartCSS.getDefaultOptions, options);
 
-    this.__prefixStyleName = options.prefixStyleName;
+    this.__prefixClassId = options.prefixClassId;
 
     /**
      * The key is the styleName and the value is an object like this:
@@ -32,38 +42,33 @@ var SmartCSS = function(options){
      * @type {Object}
      * @private
      */
-    this.__classes = {};
+    this.__styleClasses = {};
+    // The key is classId and maps to a className.
+    this.__classNameMap = {};
+    SmartCSS.registerContext(this);
 }
 
 
 
 
 SmartCSS.__data = {
-    styles : {},
-    id     : 0,
+    styles   : {},
+    contexts : [],
+    id       : 0,
 };
 
 
 
 
-
-/**
- * Sets the global default options. You should really don't change
- * this.
- * @static
- */
-SmartCSS.setDefaultOptions = function(options){
-    SmartCSS.__defaultOptions = options;
+SmartCSS.registerContext = function(context){
+    SmartCSS.__data.contexts.push(context);
 }
 
 
 
-/**
- * Returns the global default options.
- * @static
- */
-SmartCSS.getDefaultOptions = function(){
-    return SmartCSS.__defaultOptions;
+
+SmartCSS.__getNextId = function(){
+    return SmartCSS.__data.id++;
 }
 
 
@@ -81,23 +86,23 @@ SmartCSS.injectStyles = function(){
 
 SmartCSS.deleteStyles = function(){
     SmartCSS.__data.styles = {};
+    SmartCSS.__data.contexts = [];
 }
 
 
 
 /**
  * After you add the styles call this function to get the styles as string.
+ * @todo: add it as an instance method.
  */
 SmartCSS.getStylesAsString = function(){
-    var styles = SmartCSS.__data.styles;
+    var contexts = SmartCSS.__data.contexts;
     var str = '';
-    for(var key in styles){
-        if(!styles.hasOwnProperty(key)){
-            continue;
-        }
-        var styleClass = styles[key];
-        str += renderStyleClass(styleClass);
-    }
+    contexts.forEach(function(context){
+        context.getStyleClasses().forEach(function(styleClass){
+            str += renderStyleClass(styleClass);
+        })
+    })
     return str;
 }
 
@@ -111,14 +116,14 @@ var renderStyleClass = function(styleClass){
         styleBody += ruleToString(key, styleDef[key]);
     }
 
-    var hover = styleClass.getHover();
-    var styleHeader = '.' + styleClass.getClassName();
-    if(hover === true){
-        styleHeader += ':hover';
-    }else if(hover){
-        var smartCss = styleClass.getSmartCss();
-        styleHeader = '.' + smartCss.getClass(hover) + ':hover ' + styleHeader;
-    }
+    // var hover = styleClass.getHover();
+    var styleHeader = '.' + styleClass.getClassName() + styleClass.getPseudo();
+    // if(hover === true){
+    //     styleHeader += ':hover';
+    // }else if(hover){
+    //     var smartCss = styleClass.getSmartCss();
+    //     styleHeader = '.' + smartCss.getClass(hover) + ':hover ' + styleHeader;
+    // }
 
     var styleFull = styleHeader + '{' + styleBody + '}';
 
@@ -126,7 +131,6 @@ var renderStyleClass = function(styleClass){
     if(media){
         styleFull = '@media (' + media + '){' + styleFull + '}'
     }
-
     return styleFull;
 }
 
@@ -202,32 +206,28 @@ var escapeValueForProp = function(value, prop){
 
 SmartCSS.registerClass = function(styleObj, options){
     options = _.extend({
-        prefix   : void 0,
-        postfix  : void 0,
-        styleId  : void 0,
-        hover    : void 0,
-        media    : void 0,
-        smartCss : void 0
+        prefix    : 'c',
+        postfix   : void 0,
+        className : void 0,
+        media     : void 0,
+        pseudo    : void 0,
+        smartCss  : void 0,
     }, options);
-    var styleId;
-    if(options.styleId === void 0){
-        styleId = SmartCSS.__data.id;
-        // Add a "c" if no prefix supplied.
+    var className;
+    if(options.className === void 0){
+        className = SmartCSS.__data.id;
         if(options.prefix !== void 0){
-            styleId = options.prefix + styleId;
-        }else{
-            // Add a character because a style can't start with a number.
-            styleId = 'c' + styleId;
+            className = options.prefix + className;
         }
         if(options.postfix !== void 0){
-            styleId = styleId + options.postfix;
+            className = className + options.postfix;
         }
         SmartCSS.__data.id++;
     }else{
-        styleId = options.styleId;
+        className = options.className;
     }
     var styleDef = new StyleClass({
-        className : styleId,
+        className : className,
         styleDef  : styleObj,
         hover     : options.hover,
         media     : options.media,
@@ -247,16 +247,34 @@ _.extend(SmartCSS.prototype, {
 
     /**
      * Gets the style id of a style name.
+     * Don't add any pseudo things. For example if you set a class like this:
+     *
+     *     setClass('myClass:hover', ...);
+     *
+     * In order to get the className you do:
+     *
+     *     getClass('myClass');
+     *
+     * And not
+     *
+     *     getClass('myClass:hover');
+     *
      * @param  {String} styleName
      * @return {String} The class id. This is the real class that is attached to the DOM.
      */
-    getClass: function(styleName){
+    getClass: function(classId){
         // Warn if class is missing and return '' by default.
-        if(this.__classes[styleName] === void 0){
-            console.warn('Class "' + styleName + '" not set.');
+        if(this.__classNameMap[classId] === void 0){
+            console.warn('Class "' + classId + '" not set.');
             return '';
         }
-        return this.__classes[styleName].getClassName();
+        return this.__classNameMap[classId];
+    },
+
+
+
+    getStyleClasses: function(){
+        return _.values(this.__styleClasses);
     },
 
 
@@ -297,7 +315,7 @@ _.extend(SmartCSS.prototype, {
      * @return {Object}
      */
     getClassesAsMap: function(){
-        return _.clone(this.__classes);
+        return _.clone(this.__styleClasses);
     },
 
 
@@ -307,28 +325,49 @@ _.extend(SmartCSS.prototype, {
      * @param {String} name The style name, then you can get the style id with `getClass` or `getClasses`.
      * @param {Object} def The style definition `{color: 'red'}` as javascript object.
      * @param {Object} options
-     * @param {String} options.prefix
-     * @param {String} options.postfix
-     * @param {String} options.styleId
+     * @param {String} options.className
      * @param {String} options.hover
      * @param {String} options.media
      */
-    setClass: function(styleName, def, options){
+    setClass: function(selector, styleDef, options){
+        var classId = selector.split(':')[0];
+        var pseudo  = selector.split(':');
+        pseudo[0] = '';
+        pseudo = pseudo.join(':');
+
         options = _.extend({
-            smartCss: this
+            smartCss  : this,
+            className : void 0,
+            pseudo    : pseudo,
+            classId   : classId,
         }, options)
-        if(options.styleId === void 0){
-            if(this.__prefixStyleName){
-                var addPrefix = styleName + '-';
-                if(options.prefix === void 0){
-                    options.prefix = '';
-                }
-                options.prefix = addPrefix + options.prefix;
+
+        if(options.className === void 0){
+            var className = 'c';
+            // If a class with the same classId has been defined then reuse
+            // its className so :hover and other pseudo things works correctly.
+            if(this.__styleClasses[classId]){
+                className = this.__styleClasses[classId].getClassName();
             }
+            if(this.__prefixClassId){
+                className += '-' + classId;
+            }
+            className += '-' + SmartCSS.__getNextId();
+            options.className = className;
         }
-        this.__classes[styleName] = SmartCSS.registerClass(def, options);
-        return this.__classes[styleName];
+
+        var styleClass = new StyleClass({
+            className : options.className,
+            pseudo    : pseudo,
+            styleDef  : styleDef,
+            media     : options.media,
+            smartCss  : options.smartCss
+        })
+        this.__classNameMap[classId] = className;
+        this.__styleClasses[classId + pseudo] = styleClass;
+        return this.__styleClasses[classId + pseudo];
     }
+
 
 
 })

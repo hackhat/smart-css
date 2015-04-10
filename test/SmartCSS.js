@@ -23,24 +23,24 @@ describe('SmartCSS', function(){
 
 
 
-    it('should create a final class including the class name when (prefixStyleName=default)', function(){
+    it('should create a final class including the class name when (prefixClassId=default)', function(){
         var css = new SmartCSS({});
         css.setClass('myClassName', {color: 'red'});
         var expected = '.' + css.getClass('myClassName') + '{color:red;}';
         var current  = SmartCSS.getStylesAsString();
-        expect(_.startsWith(expected, '.myClassName')).to.be.ok;
         expect(current).to.be.equal(expected);
+        expect(_.startsWith(expected, '.c-myClassName')).to.be.ok;
     })
 
 
 
-    it('should create a final class not including the class name when (prefixStyleName=false)', function(){
-        var css = new SmartCSS({prefixStyleName: false});
+    it('should create a final class not including the class name when (prefixClassId=false)', function(){
+        var css = new SmartCSS({prefixClassId: false});
         css.setClass('myClassName', {color: 'red'});
         var expected = '.' + css.getClass('myClassName') + '{color:red;}';
         var current  = SmartCSS.getStylesAsString();
-        expect(_.startsWith(expected, '.myClassName')).to.be.false;
         expect(current).to.be.equal(expected);
+        expect(_.startsWith(expected, '.c-myClassName')).to.be.false;
     })
 
 
@@ -49,11 +49,7 @@ describe('SmartCSS', function(){
     it('should not the delete the current css after you get it', function(){
         var css = new SmartCSS({});
         css.setClass('myClassName', {color: 'red'});
-        var expected = '.' + css.getClass('myClassName') + '{color:red;}';
-        var current  = SmartCSS.getStylesAsString();
-        current      = SmartCSS.getStylesAsString(); // Get twice to check if it works.
-        expect(_.startsWith(expected, '.myClassName')).to.be.ok;
-        expect(current).to.be.equal(expected);
+        expect(SmartCSS.getStylesAsString()).to.be.equal(SmartCSS.getStylesAsString());
     })
 
 
@@ -64,7 +60,6 @@ describe('SmartCSS', function(){
         var expected = '.' + css.getClass('myClassName') + '{color:red;background:red;}';
         var current  = SmartCSS.getStylesAsString();
         current      = SmartCSS.getStylesAsString(); // Get twice to check if it works.
-        expect(_.startsWith(expected, '.myClassName')).to.be.ok;
         expect(current).to.be.equal(expected);
     })
 
@@ -138,7 +133,7 @@ describe('SmartCSS', function(){
 
         it('should allow :hover', function(){
             var css = new SmartCSS();
-            css.setClass('myClassName', {color: 'red'}, {hover: true});
+            css.setClass('myClassName:hover', {color: 'red'});
             var expected = '.' + css.getClass('myClassName') + ':hover{color:red;}';
             var current  = SmartCSS.getStylesAsString();
             expect(current).to.be.equal(expected);
@@ -155,12 +150,12 @@ describe('SmartCSS', function(){
          * And you want to change the `a` element background when
          * `li` element is hovered.
          */
-        it('should allow :hover on parent', function(){
+        it.only('should allow :hover on parent', function(){
             var css = new SmartCSS({});
             css.setClass('a', {color: 'red'});
-            css.setClass('b', {
+            css.setClass('a:hover b', {
                 background: 'red'
-            }, {hover: 'a'});
+            });
             var expected = '.' + css.getClass('a') + '{color:red;}' +
                            '.' + css.getClass('a') + ':hover .' + css.getClass('b') + '{background:red;}';
             var current  = SmartCSS.getStylesAsString('a');
