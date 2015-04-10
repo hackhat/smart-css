@@ -178,6 +178,13 @@ describe('SmartCSS', function(){
 
 
 
+        it.only('should throw error if previous selector segment has not been defined', function(){
+            var css = new SmartCSS({});
+            expect(css.setClass.bind(css, '.a .b', {})).to.throw(Error, 'Ancestor not defined.');
+        })
+
+
+
     })
 
 

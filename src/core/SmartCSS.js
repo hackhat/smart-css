@@ -368,13 +368,14 @@ _.extend(SmartCSS.prototype, {
     setClass: function(selector, styleDef, options){
         var selectorObject = Slick.parse(selector);
         validateSelectorObject(selectorObject);
-        if(selectorObject.length > 1){
-            throw new Error('Not accepting multiple definitions at once.');
-        }
         selectorObject = selectorObject[0];
-        if(_.last(selectorObject).classList.length > 1){
-            throw new Error('Not accepting multiple classes at once.')
-        }
+        console.log(selectorObject)
+        // Checks whenever ancestors are defined.
+        _.forEach(selectorObject, function(segment){
+            if(this.getClass(segment.classList[0]) === ''){
+                throw new Error('Ancestor not defined.')
+            }
+        }.bind(this))
         var classId = _.last(selectorObject).classList[0];
         var pseudo  = selector.split(':');
         pseudo[0] = '';
