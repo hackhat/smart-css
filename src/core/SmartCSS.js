@@ -43,12 +43,15 @@ var SmartCSS = function(options){
     this.__styleClasses = {};
     // The key is classId and maps to a className.
     this.__classNameMap = {};
-    SmartCSS.registerContext(this);
+    SmartCSS.__registerContext(this);
 }
 
 
 
-
+/**
+ * @private
+ * @type {Object}
+ */
 SmartCSS.__data = {
     styles   : {},
     contexts : [],
@@ -57,8 +60,12 @@ SmartCSS.__data = {
 
 
 
-
-SmartCSS.registerContext = function(context){
+/**
+ * Register a context.
+ * @private
+ * @param  {core.SmartCSS} context
+ */
+SmartCSS.__registerContext = function(context){
     SmartCSS.__data.contexts.push(context);
 }
 
@@ -67,6 +74,11 @@ SmartCSS.registerContext = function(context){
 // Not yet used. In the future we can use this to make shorter ids.
 // var alphabet = "abcdefghijklmnopqrstuvwxyz";
 // alphabet = (alphabet + alphabet.toUpperCase()).split('');
+/**
+ * Gets a new id. Is a singleton therefore it will always be different.
+ * @private
+ * @return {String}
+ */
 SmartCSS.__getNextId = function(){
     return SmartCSS.__data.index++;
 }
@@ -74,7 +86,7 @@ SmartCSS.__getNextId = function(){
 
 
 /**
- * After you add the styles call this function to apply the styles.
+ * After you add the styles call this function to inject the styles into your DOM.
  */
 SmartCSS.injectStyles = function(){
     var tag = document.createElement('style');
@@ -84,6 +96,10 @@ SmartCSS.injectStyles = function(){
 
 
 
+/**
+ * Deletes all the cached styles. This will not affect the current applied styles.
+ * Only affects future calls to #injectStyles or #getStylesAsString.
+ */
 SmartCSS.deleteStyles = function(){
     SmartCSS.__data.styles = {};
     SmartCSS.__data.contexts = [];
