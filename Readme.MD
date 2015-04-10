@@ -95,6 +95,15 @@ Is very easy to get started:
 
 
 
+## Roadmap
+
+ - Remove the singleton, is bad practice and can mess up things;
+ - Add auto prefix for vendors;
+ - Find a better way to handle measurements;
+ - Find a better way to set certain properties that are difficult to be written as string; For example write an object instead of a big nasty string;
+
+
+
 ## Examples:
 
 All examples expect you to set the setup code before:
