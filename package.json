@@ -1,6 +1,6 @@
 {
   "name": "smart-css",
-  "version": "0.0.6",
+  "version": "v1.0.0",
   "description": "",
   "main": "src/index.js",
   "scripts": {
