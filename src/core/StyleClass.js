@@ -12,14 +12,11 @@ var StyleClass = function(options){
         styleDef       : void 0,
         selectorObject : void 0,
         media          : void 0,
-        // Instace of smartCss
-        smartCss       : void 0,
     }, options);
     this.__className      = options.className;
     this.__styleDef       = options.styleDef;
     this.__media          = options.media;
     this.__selectorObject = options.selectorObject;
-    this.__smartCss       = options.smartCss;
 }
 
 
@@ -51,16 +48,6 @@ _.extend(StyleClass.prototype, {
 
     getMedia: function(){
         return this.__media;
-    },
-
-
-
-    /**
-     * Temporary is necessary to keep tracking of the SmartCSS instance.
-     * Bad practice, but can wait until refactor.
-     */
-    getSmartCss: function(){
-        return this.__smartCss;
     }
 
 

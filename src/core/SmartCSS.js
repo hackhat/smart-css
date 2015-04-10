@@ -120,13 +120,15 @@ SmartCSS.getStylesAsString = function(){
     return str.join('');
 }
 
-var renderStyleClass = function(styleClass){
+
+
+var renderStyleClass = function(styleClass, classNamesAsMap){
     var styleDef = styleClass.getStyleDef();
     var styleBody = '';
     for(var key in styleDef){
         styleBody += ruleToString(key, styleDef[key]);
     }
-    var styleHeader = renderSelectorObject(styleClass.getSelectorObject(), styleClass.getSmartCss().getClassNameMap());
+    var styleHeader = renderSelectorObject(styleClass.getSelectorObject(), classNamesAsMap);
     var styleFull = styleHeader + '{' + styleBody + '}';
     var media = styleClass.getMedia();
     if(media){
@@ -302,7 +304,6 @@ _.extend(SmartCSS.prototype, {
         pseudo = pseudo.join(':');
 
         options = _.extend({
-            smartCss  : this,
             className : void 0,
             pseudo    : pseudo,
             classId   : classId,
@@ -331,10 +332,8 @@ _.extend(SmartCSS.prototype, {
         var styleClass = new StyleClass({
             className      : options.className,
             selectorObject : selectorObject,
-            // pseudo         : pseudo,
             styleDef       : styleDef,
             media          : options.media,
-            smartCss       : options.smartCss
         })
         this.__classNameMap[classId] = className;
         this.__styleClasses[classId + pseudo] = styleClass;
@@ -345,8 +344,9 @@ _.extend(SmartCSS.prototype, {
 
     getStylesAsString: function(){
         var str = [];
+        var classNamesAsMap = this.getClassNameMap();
         this.getStyleClasses().forEach(function(styleClass){
-            str.push(renderStyleClass(styleClass));
+            str.push(renderStyleClass(styleClass, classNamesAsMap));
         });
         return str.join('');
     }
