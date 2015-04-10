@@ -45,6 +45,18 @@ describe('SmartCSS', function(){
 
 
 
+    it('should use the same class name for the same class id', function(){
+        var css = new SmartCSS({});
+        css.setClass('.a', {color: 'red'});
+        css.setClass('.a:hover', {color: 'yellow'});
+        var expected = '.' + css.getClass('a') + '{color:red;}' +
+                       '.' + css.getClass('a') + ':hover{color:yellow;}';
+        var current  = SmartCSS.getStylesAsString();
+        expect(current).to.be.equal(expected);
+    })
+
+
+
     // RCSS deletes the styles after you call `getStylesAsString`.
     it('should not the delete the current css after you get it', function(){
         var css = new SmartCSS({});
