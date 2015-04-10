@@ -1,4 +1,4 @@
-# smart-css
+# smart-css [![Build Status](https://travis-ci.org/hackhat/smart-css.svg?branch=dev)](https://travis-ci.org/hackhat/smart-css)
 
 Write CSS in JavaScript with namespaces, proper names, no conflicts and expected results for react.js. 
 

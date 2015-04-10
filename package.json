@@ -15,7 +15,6 @@
   "author": "hackhat",
   "license": "ISC",
   "dependencies": {
-    "escape-html": "^1.0.1",
     "lodash": "^3.3.1",
     "rcss": "^0.1.4",
     "slick": "^1.12.1",
