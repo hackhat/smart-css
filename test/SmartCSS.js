@@ -164,6 +164,20 @@ describe('SmartCSS', function(){
 
 
 
+        it('should throw error if more than one selector is defined', function(){
+            var css = new SmartCSS({});
+            expect(css.setClass.bind(css, '.a, .b', {})).to.throw(Error, 'Doesn\'t accept multiple definitions at once.');
+        })
+
+
+
+        it('should throw error if more than one class has been defined', function(){
+            var css = new SmartCSS({});
+            expect(css.setClass.bind(css, '.a.b', {})).to.throw(Error, 'Doesn\'t accept multiple classes at once.');
+        })
+
+
+
     })
 
 

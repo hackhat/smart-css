@@ -366,12 +366,12 @@ _.extend(SmartCSS.prototype, {
      * @param {String} options.media
      */
     setClass: function(selector, styleDef, options){
-        var selectorObject = Slick.parse(selector/*'.a:after .basda2-12::abc(412)'*/);
+        var selectorObject = Slick.parse(selector);
+        validateSelectorObject(selectorObject);
         if(selectorObject.length > 1){
             throw new Error('Not accepting multiple definitions at once.');
         }
         selectorObject = selectorObject[0];
-        // console.log(selectorObject)
         if(_.last(selectorObject).classList.length > 1){
             throw new Error('Not accepting multiple classes at once.')
         }
@@ -417,6 +417,20 @@ _.extend(SmartCSS.prototype, {
 
 
 })
+
+
+
+
+var validateSelectorObject = function(selectorObject){
+    // Should only have one selector. Filters out: ".a, .b";
+    if(selectorObject.length > 1){
+        throw new Error('Doesn\'t accept multiple definitions at once.');
+    }
+    // Should only have only 1 class per segment. Filters out: ".a.b";
+    _.forEach(selectorObject[0], function(segment){
+        if(segment.classList.length > 1) throw new Error('Doesn\'t accept multiple classes at once.')
+    })
+}
 
 
 
