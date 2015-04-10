@@ -4,7 +4,7 @@
   "description": "",
   "main": "src/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "./node_modules/mocha/bin/mocha",
     "npm prefix": "npm --userconfig=.npmrc"
   },
   "keywords": [
@@ -27,6 +27,6 @@
   },
   "devDependencies": {
     "chai": "^2.2.0",
-    "mocha": "^2.2.1"
+    "mocha": "^2.2.4"
   }
 }
