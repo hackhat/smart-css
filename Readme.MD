@@ -19,42 +19,63 @@ Is very easy to get started:
     // add the componentA's styles.
     var SmartCSS = require('smart-css');
     var css      = new SmartCSS();
+    var React    = require('react');
     // You can name a style without worring about other
     // components because you are adding all the styles
     // to the componentA only.
-    css.setClass('root', {
+    css.setClass('.root', {
         background: 'red'
     })
-    css.setClass('rootHover', {
+    css.setClass('.root:hover', {
         background: 'green'
     })
 
-    // Your components will look like this:
-    React.DOM.div({
-        // This will return a string with the classes that you set
-        // true.
-        className   : css.getClasses({
-            root      : true,
-            rootHover : this.state.hover,
-        })
-    })
-
+    // Your component render method will look like this:
+    React.createClass({
+        render: function(){
+            return React.DOM.div({
+                // This will return a string with the classes that you set
+                // true.
+                className : css.getClass('root')
+            })
+        }
+    });
 
     // In componentB.js
     // Creates a new context, only for componentB.
     var SmartCSS = require('smart-css');
     var css      = new SmartCSS();
+    var React    = require('react');
     // Notice how we used the exact class name as componentA's.
     // This is the power of namespaces, you can keep the name
     // you want without worrying about conflicts with other
     // classes you defined.
-    css.setClass('root', {
+    css.setClass('.root', {
         background: 'yellow'
     })
-    React.DOM.div({
-        className : css.getClass('root')
+    css.setClass('.colorBlue', {
+        color: 'blue'
     })
-
+    // Here you can use pure css, so when the element with the 
+    // `root` class is hovered the element with class `link`
+    // will have the color set to green.
+    css.setClass('.root:hover .link', {
+        color: 'green'
+    })
+    React.createClass({
+        render: function(){
+            return React.DOM.li({
+                className : css.getClasses({
+                    root      : true,
+                    colorBlue : true,
+                })
+            },
+                React.DOM.a({
+                    className: css.getClass('link')
+                })
+            )
+        }
+    });
     // Then apply all the styles, only after this command is ran
     // your styles are added to the DOM.
     SmartCSS.injectStyles();
