@@ -18,8 +18,8 @@
     "escape-html": "^1.0.1",
     "lodash": "^3.3.1",
     "rcss": "^0.1.4",
-    "tinycolor2": "^1.1.2",
-    "valid-media-queries": "0.0.3"
+    "slick": "^1.12.1",
+    "tinycolor2": "^1.1.2"
   },
   "repository": {
     "type": "git",

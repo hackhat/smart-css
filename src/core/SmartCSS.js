@@ -1,10 +1,8 @@
-var _                   = require('lodash');
-var tinycolor           = require('tinycolor2');
-var mediaQueryValidator = require('valid-media-queries');
-var escapeHTML          = require('escape-html');
-var StyleClass          = require('./StyleClass');
-var Slick               = require('slick');
-var util                = require('util');
+var _          = require('lodash');
+var tinycolor  = require('tinycolor2');
+var StyleClass = require('./StyleClass');
+var Slick      = require('slick');
+var util       = require('util');
 
 // console.log(util.inspect(Slick.parse('.a:hover .basda2-12::select'), {depth:12}));
 
