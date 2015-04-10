@@ -208,10 +208,13 @@ _.extend(SmartCSS.prototype, {
      * @param {String} options.media
      */
     setClass: function(selector, styleDef, options){
+        if(this.__styleClasses[selector]){
+            throw new Error('Class id already exists for this selector')
+        }
         var selectorObject = Slick.parse(selector);
         validateSelectorObject(selectorObject);
         selectorObject = selectorObject[0];
-        // console.log(selectorObject)
+
         // Checks whenever ancestors are defined.
         _.forEach(selectorObject, function(segment, i){
             // The last one obviously is not yet added to the set, therefore
@@ -223,18 +226,19 @@ _.extend(SmartCSS.prototype, {
             }
         }.bind(this))
         var classId = _.last(selectorObject).classList[0];
-        var pseudo  = selector.split(':');
-        pseudo[0] = '';
-        pseudo = pseudo.join(':');
 
         options = _.extend({
             className : void 0,
-            pseudo    : pseudo,
             classId   : classId,
         }, options)
 
+        if(options.className !== void 0 && this.getClass(classId) !== ''){
+            throw new Error('Can\'t use hardcoded class name because already exists one for the same class id');
+        }
+
+        var className = options.className;
         if(options.className === void 0){
-            var className = '';
+            className = '';
             // If a class with the same classId has been defined then reuse
             // its className so :hover and other pseudo things works correctly.
             if(this.__styleClasses[classId]){
@@ -254,14 +258,15 @@ _.extend(SmartCSS.prototype, {
         options.className = className;
 
         var styleClass = new StyleClass({
-            className      : options.className,
+            className   : options.className,
+            selectorString : selector,
             selectorObject : selectorObject,
             styleDef       : styleDef,
             media          : options.media,
         })
         this.__classNameMap[classId] = className;
-        this.__styleClasses[classId + pseudo] = styleClass;
-        return this.__styleClasses[classId + pseudo];
+        this.__styleClasses[selector] = styleClass;
+        return this.__styleClasses[selector];
     },
 
 

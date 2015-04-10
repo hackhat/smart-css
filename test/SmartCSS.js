@@ -139,9 +139,36 @@ describe('SmartCSS', function(){
 
 
 
+    it('should allow to create a hardcoded className', function(){
+        var css = new SmartCSS({});
+        css.setClass('.a', {color: 'red'}, {className: 'abc'});
+        var expected = '.abc{color:red;}';
+        var current  = SmartCSS.getStylesAsString();
+        expect(current).to.be.equal(expected);
+    })
+
+
+
+    it('should throw an error if tries to set a class with a hardcoded class name when another class name is already assigned for that class id', function(){
+        var css = new SmartCSS({});
+        css.setClass('.a', {color: 'red'});
+        expect(css.setClass.bind(css, '.a:hover', {color: 'red'}, {className: 'abc'})).to.throw(Error, 'Can\'t use hardcoded class name because already exists one for the same class id');
+    })
+
+
+
+
     it('should throw an error if className starts with a number', function(){
         var css = new SmartCSS({});
         expect(css.setClass.bind(css, '.a', {color: 'red'}, {className: '2'})).to.throw(Error, 'Invalid class name');
+    })
+
+
+
+    it('should throw an error if the same class id and object selector is set', function(){
+        var css = new SmartCSS({});
+        css.setClass('.a', {color: 'red'})
+        expect(css.setClass.bind(css, '.a', {color: 'red'})).to.throw(Error, 'Class id already exists for this selector');
     })
 
 
