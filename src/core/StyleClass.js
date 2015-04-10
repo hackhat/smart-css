@@ -8,18 +8,18 @@ var _ = require('lodash');
  */
 var StyleClass = function(options){
     options = _.extend({
-        className : void 0,
-        styleDef  : void 0,
-        pseudo    : void 0,
-        media     : void 0,
+        className      : void 0,
+        styleDef       : void 0,
+        selectorObject : void 0,
+        media          : void 0,
         // Instace of smartCss
-        smartCss  : void 0,
+        smartCss       : void 0,
     }, options);
-    this.__className = options.className;
-    this.__styleDef  = options.styleDef;
-    this.__media     = options.media;
-    this.__pseudo    = options.pseudo;
-    this.__smartCss  = options.smartCss;
+    this.__className      = options.className;
+    this.__styleDef       = options.styleDef;
+    this.__media          = options.media;
+    this.__selectorObject = options.selectorObject;
+    this.__smartCss       = options.smartCss;
 }
 
 
@@ -43,8 +43,8 @@ _.extend(StyleClass.prototype, {
 
 
 
-    getPseudo: function(){
-        return this.__pseudo;
+    getSelectorObject: function(){
+        return this.__selectorObject;
     },
 
 

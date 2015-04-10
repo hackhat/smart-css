@@ -105,6 +105,32 @@ SmartCSS.getStylesAsString = function(){
     })
     return str;
 }
+/**
+ * Renders a css header definition from the selectorObject
+ * and a classMap. The classMap is needed to replace the class
+ * names from the selectorObject.
+ */
+var renderSelectorObject = function(selectorObject, classMap){
+    var str = [];
+    var getClassName = function(classId){
+        if(!classMap || classMap[classId] === void 0) return classId;
+        return classMap[classId];
+    }
+    // console.log('>>',selectorObject)
+    _.forEach(selectorObject, function(segment, i){
+        if(i !== 0) str.push(segment.combinator);
+        str.push('.' + getClassName(segment.classList[0]));
+        _.forEach(segment.pseudos, function(pseudo){
+            if(pseudo.type === 'class')   str.push(':')
+            if(pseudo.type === 'element') str.push('::')
+            str.push(pseudo.name);
+            if(pseudo.value/* !== void 0 || pseudo.value !== null*/){
+                str.push('(' + pseudo.value + ')');
+            }
+        })
+    })
+    return str.join('');
+}
 
 var renderStyleClass = function(styleClass){
     var styleDef = styleClass.getStyleDef();
@@ -117,7 +143,10 @@ var renderStyleClass = function(styleClass){
     }
 
     // var hover = styleClass.getHover();
-    var styleHeader = '.' + styleClass.getClassName() + styleClass.getPseudo();
+    var styleHeader = renderSelectorObject(styleClass.getSelectorObject(), styleClass.getSmartCss().getClassNameMap());
+    // styleClass.selectorObject
+
+    // '.' + styleClass.getClassName() + styleClass.getPseudo();
     // if(hover === true){
     //     styleHeader += ':hover';
     // }else if(hover){
@@ -273,6 +302,13 @@ _.extend(SmartCSS.prototype, {
 
 
 
+    getClassNameMap: function(){
+        // @todo: return a copy;
+        return this.__classNameMap;
+    },
+
+
+
     getStyleClasses: function(){
         return _.values(this.__styleClasses);
     },
@@ -330,7 +366,16 @@ _.extend(SmartCSS.prototype, {
      * @param {String} options.media
      */
     setClass: function(selector, styleDef, options){
-        var classId = selector.split(':')[0];
+        var selectorObject = Slick.parse(selector/*'.a:after .basda2-12::abc(412)'*/);
+        if(selectorObject.length > 1){
+            throw new Error('Not accepting multiple definitions at once.');
+        }
+        selectorObject = selectorObject[0];
+        // console.log(selectorObject)
+        if(_.last(selectorObject).classList.length > 1){
+            throw new Error('Not accepting multiple classes at once.')
+        }
+        var classId = _.last(selectorObject).classList[0];
         var pseudo  = selector.split(':');
         pseudo[0] = '';
         pseudo = pseudo.join(':');
@@ -357,11 +402,12 @@ _.extend(SmartCSS.prototype, {
         }
 
         var styleClass = new StyleClass({
-            className : options.className,
-            pseudo    : pseudo,
-            styleDef  : styleDef,
-            media     : options.media,
-            smartCss  : options.smartCss
+            className      : options.className,
+            selectorObject : selectorObject,
+            // pseudo         : pseudo,
+            styleDef       : styleDef,
+            media          : options.media,
+            smartCss       : options.smartCss
         })
         this.__classNameMap[classId] = className;
         this.__styleClasses[classId + pseudo] = styleClass;

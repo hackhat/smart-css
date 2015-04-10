@@ -25,7 +25,7 @@ describe('SmartCSS', function(){
 
     it('should create a final class including the class name when (prefixClassId=default)', function(){
         var css = new SmartCSS({});
-        css.setClass('myClassName', {color: 'red'});
+        css.setClass('.myClassName', {color: 'red'});
         var expected = '.' + css.getClass('myClassName') + '{color:red;}';
         var current  = SmartCSS.getStylesAsString();
         expect(current).to.be.equal(expected);
@@ -36,7 +36,7 @@ describe('SmartCSS', function(){
 
     it('should create a final class not including the class name when (prefixClassId=false)', function(){
         var css = new SmartCSS({prefixClassId: false});
-        css.setClass('myClassName', {color: 'red'});
+        css.setClass('.myClassName', {color: 'red'});
         var expected = '.' + css.getClass('myClassName') + '{color:red;}';
         var current  = SmartCSS.getStylesAsString();
         expect(current).to.be.equal(expected);
@@ -48,7 +48,7 @@ describe('SmartCSS', function(){
     // RCSS deletes the styles after you call `getStylesAsString`.
     it('should not the delete the current css after you get it', function(){
         var css = new SmartCSS({});
-        css.setClass('myClassName', {color: 'red'});
+        css.setClass('.myClassName', {color: 'red'});
         expect(SmartCSS.getStylesAsString()).to.be.equal(SmartCSS.getStylesAsString());
     })
 
@@ -56,7 +56,7 @@ describe('SmartCSS', function(){
 
     it('should work correctly with multiple css properties', function(){
         var css = new SmartCSS({});
-        css.setClass('myClassName', {color: 'red', background: 'red'});
+        css.setClass('.myClassName', {color: 'red', background: 'red'});
         var expected = '.' + css.getClass('myClassName') + '{color:red;background:red;}';
         var current  = SmartCSS.getStylesAsString();
         current      = SmartCSS.getStylesAsString(); // Get twice to check if it works.
@@ -67,7 +67,7 @@ describe('SmartCSS', function(){
 
     it('should convert tinycolor to a hsl by default', function(){
         var css = new SmartCSS();
-        css.setClass('myClassName', {color: tinycolor('red')});
+        css.setClass('.myClassName', {color: tinycolor('red')});
         var expected = '.' + css.getClass('myClassName') + '{color:hsl(0, 100%, 50%);}';
         var current  = SmartCSS.getStylesAsString();
         expect(current).to.be.equal(expected);
@@ -77,7 +77,7 @@ describe('SmartCSS', function(){
 
     it('should allow hsl colors', function(){
         var css = new SmartCSS();
-        css.setClass('myClassName', {color: 'hsl(0, 100%, 50%)'});
+        css.setClass('.myClassName', {color: 'hsl(0, 100%, 50%)'});
         var expected = '.' + css.getClass('myClassName') + '{color:hsl(0, 100%, 50%);}';
         var current  = SmartCSS.getStylesAsString();
         expect(current).to.be.equal(expected);
@@ -87,7 +87,7 @@ describe('SmartCSS', function(){
 
     it('should allow normal colors', function(){
         var css = new SmartCSS();
-        css.setClass('myClassName', {color: '#FF0000'});
+        css.setClass('.myClassName', {color: '#FF0000'});
         var expected = '.' + css.getClass('myClassName') + '{color:#FF0000;}';
         var current  = SmartCSS.getStylesAsString();
         expect(current).to.be.equal(expected);
@@ -98,7 +98,7 @@ describe('SmartCSS', function(){
     it('should allow @media property', function(){
         var css = new SmartCSS();
         var def = {color: 'red'};
-        css.setClass('myClassName', def, {media: 'max-width: 500px'});
+        css.setClass('.myClassName', def, {media: 'max-width: 500px'});
         var expected = '@media (max-width: 500px){.' + css.getClass('myClassName') + '{color:red;}}';
         var current  = SmartCSS.getStylesAsString();
         expect(current).to.be.equal(expected);
@@ -109,7 +109,7 @@ describe('SmartCSS', function(){
     // RCSS: automatically adds quotes.
     it('should allow proper content variable', function(){
         var css = new SmartCSS({});
-        css.setClass('a', {content: 'attr(data-hover)'});
+        css.setClass('.a', {content: 'attr(data-hover)'});
         var expected = '.' + css.getClass('a') + '{content:attr(data-hover);}';
         var current  = SmartCSS.getStylesAsString();
         expect(current).to.be.equal(expected);
@@ -119,7 +119,7 @@ describe('SmartCSS', function(){
 
     it('should allow proper content string', function(){
         var css = new SmartCSS({});
-        css.setClass('a', {content: '"string"'});
+        css.setClass('.a', {content: '"string"'});
         var expected = '.' + css.getClass('a') + '{content:"string";}';
         var current  = SmartCSS.getStylesAsString('a');
         expect(current).to.be.equal(expected);
@@ -133,7 +133,7 @@ describe('SmartCSS', function(){
 
         it('should allow :hover', function(){
             var css = new SmartCSS();
-            css.setClass('myClassName:hover', {color: 'red'});
+            css.setClass('.myClassName:hover', {color: 'red'});
             var expected = '.' + css.getClass('myClassName') + ':hover{color:red;}';
             var current  = SmartCSS.getStylesAsString();
             expect(current).to.be.equal(expected);
@@ -150,10 +150,10 @@ describe('SmartCSS', function(){
          * And you want to change the `a` element background when
          * `li` element is hovered.
          */
-        it.only('should allow :hover on parent', function(){
+        it('should allow :hover on parent', function(){
             var css = new SmartCSS({});
-            css.setClass('a', {color: 'red'});
-            css.setClass('a:hover b', {
+            css.setClass('.a', {color: 'red'});
+            css.setClass('.a:hover .b', {
                 background: 'red'
             });
             var expected = '.' + css.getClass('a') + '{color:red;}' +
