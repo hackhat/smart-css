@@ -29,7 +29,7 @@ describe('SmartCSS', function(){
         var expected = '.' + css.getClass('myClassName') + '{color:red;}';
         var current  = SmartCSS.getStylesAsString();
         expect(current).to.be.equal(expected);
-        expect(_.startsWith(expected, '.c-myClassName')).to.be.ok;
+        expect(_.startsWith(expected, '.myClassName')).to.be.ok;
     })
 
 
@@ -127,6 +127,13 @@ describe('SmartCSS', function(){
 
 
 
+    it('should throw an error if className starts with a number', function(){
+        var css = new SmartCSS({});
+        expect(css.setClass.bind(css, '.a', {color: 'red'}, {className: '2'})).to.throw(Error, 'Invalid class name');
+    })
+
+
+
     describe('should allow pseudo classes/elements', function(){
 
 
@@ -141,12 +148,11 @@ describe('SmartCSS', function(){
 
 
 
-        it.only('should allow pseudo elements like (::first-line)', function(){
+        it('should allow pseudo elements like (::first-line)', function(){
             var css = new SmartCSS();
             css.setClass('.a::first-line', {color: 'red'});
-            var expected = '.' + css.getClass('myClassName') + '::first-line{color:red;}';
+            var expected = '.' + css.getClass('a') + '::first-line{color:red;}';
             var current  = SmartCSS.getStylesAsString();
-            console.log(current)
             expect(current).to.be.equal(expected);
         })
 

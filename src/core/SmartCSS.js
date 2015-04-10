@@ -54,7 +54,7 @@ var SmartCSS = function(options){
 SmartCSS.__data = {
     styles   : {},
     contexts : [],
-    id       : 0,
+    index    : 0,
 };
 
 
@@ -66,9 +66,11 @@ SmartCSS.registerContext = function(context){
 
 
 
-
+// Not yet used. In the future we can use this to make shorter ids.
+// var alphabet = "abcdefghijklmnopqrstuvwxyz";
+// alphabet = (alphabet + alphabet.toUpperCase()).split('');
 SmartCSS.__getNextId = function(){
-    return SmartCSS.__data.id++;
+    return SmartCSS.__data.index++;
 }
 
 
@@ -233,40 +235,6 @@ var escapeValueForProp = function(value, prop){
 }
 
 
-SmartCSS.registerClass = function(styleObj, options){
-    options = _.extend({
-        prefix    : 'c',
-        postfix   : void 0,
-        className : void 0,
-        media     : void 0,
-        pseudo    : void 0,
-        smartCss  : void 0,
-    }, options);
-    var className;
-    if(options.className === void 0){
-        className = SmartCSS.__data.id;
-        if(options.prefix !== void 0){
-            className = options.prefix + className;
-        }
-        if(options.postfix !== void 0){
-            className = className + options.postfix;
-        }
-        SmartCSS.__data.id++;
-    }else{
-        className = options.className;
-    }
-    var styleDef = new StyleClass({
-        className : className,
-        styleDef  : styleObj,
-        hover     : options.hover,
-        media     : options.media,
-        smartCss  : options.smartCss
-    })
-    SmartCSS.__data.styles[styleId] = styleDef;
-    return styleDef;
-}
-
-
 
 
 
@@ -393,18 +361,24 @@ _.extend(SmartCSS.prototype, {
         }, options)
 
         if(options.className === void 0){
-            var className = 'c';
+            var className = '';
             // If a class with the same classId has been defined then reuse
             // its className so :hover and other pseudo things works correctly.
             if(this.__styleClasses[classId]){
                 className = this.__styleClasses[classId].getClassName();
+            }else{
+                if(this.__prefixClassId){
+                    className += classId;
+                }else{
+                    className = '_' + className;
+                }
             }
-            if(this.__prefixClassId){
-                className += '-' + classId;
-            }
-            className += '-' + SmartCSS.__getNextId();
-            options.className = className;
+            className += SmartCSS.__getNextId();
         }
+        if(!isValidClassName(className)){
+            throw new Error('Invalid class name');
+        }
+        options.className = className;
 
         var styleClass = new StyleClass({
             className      : options.className,
@@ -423,7 +397,16 @@ _.extend(SmartCSS.prototype, {
 
 })
 
+var isValidClassName = function(className){
+    if(!className) return false;
+    // Is valid if the first letter is not a number.
+    // @todo: a stronger check.
+    return !isNumber(className[0]);
+}
 
+var isNumber = function(n){
+    return !isNaN(parseFloat(n)) && isFinite(n);
+}
 
 
 var validateSelectorObject = function(selectorObject){
