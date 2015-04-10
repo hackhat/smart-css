@@ -158,6 +158,16 @@ describe('SmartCSS', function(){
 
 
 
+        it('should allow pseudo class with value', function(){
+            var css = new SmartCSS();
+            css.setClass('.a:nth-child(27)', {color: 'red'});
+            var expected = '.' + css.getClass('a') + ':nth-child(27){color:red;}';
+            var current  = SmartCSS.getStylesAsString();
+            expect(current).to.be.equal(expected);
+        })
+
+
+
         /**
          * Sometimes you have this hierarchy:
          *

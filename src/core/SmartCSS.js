@@ -107,6 +107,24 @@ SmartCSS.getStylesAsString = function(){
     })
     return str;
 }
+
+var renderStyleClass = function(styleClass){
+    var styleDef = styleClass.getStyleDef();
+    var styleBody = '';
+    for(var key in styleDef){
+        styleBody += ruleToString(key, styleDef[key]);
+    }
+    var styleHeader = renderSelectorObject(styleClass.getSelectorObject(), styleClass.getSmartCss().getClassNameMap());
+    var styleFull = styleHeader + '{' + styleBody + '}';
+    var media = styleClass.getMedia();
+    if(media){
+        styleFull = '@media (' + media + '){' + styleFull + '}'
+    }
+    return styleFull;
+}
+
+
+
 /**
  * Renders a css header definition from the selectorObject
  * and a classMap. The classMap is needed to replace the class
@@ -115,7 +133,6 @@ SmartCSS.getStylesAsString = function(){
 var renderSelectorObject = function(selectorObject, classMap){
     var str = [];
     var getClassName = function(classId){
-        if(!classMap || classMap[classId] === void 0) return classId;
         return classMap[classId];
     }
     // console.log('>>',selectorObject)
@@ -134,36 +151,6 @@ var renderSelectorObject = function(selectorObject, classMap){
     return str.join('');
 }
 
-var renderStyleClass = function(styleClass){
-    var styleDef = styleClass.getStyleDef();
-    var styleBody = '';
-    for(var key in styleDef){
-        if(!styleDef.hasOwnProperty(key)){
-            continue;
-        }
-        styleBody += ruleToString(key, styleDef[key]);
-    }
-
-    // var hover = styleClass.getHover();
-    var styleHeader = renderSelectorObject(styleClass.getSelectorObject(), styleClass.getSmartCss().getClassNameMap());
-    // styleClass.selectorObject
-
-    // '.' + styleClass.getClassName() + styleClass.getPseudo();
-    // if(hover === true){
-    //     styleHeader += ':hover';
-    // }else if(hover){
-    //     var smartCss = styleClass.getSmartCss();
-    //     styleHeader = '.' + smartCss.getClass(hover) + ':hover ' + styleHeader;
-    // }
-
-    var styleFull = styleHeader + '{' + styleBody + '}';
-
-    var media = styleClass.getMedia();
-    if(media){
-        styleFull = '@media (' + media + '){' + styleFull + '}'
-    }
-    return styleFull;
-}
 
 
 var rulesToString = function(className, styleObj){
@@ -197,6 +184,8 @@ var rulesToString = function(className, styleObj){
     return markup + pseudos + mediaQueries;
 }
 
+
+
 var _rulesToStringHeadless = function(styleObj){
     var markup = '';
 
@@ -212,11 +201,17 @@ var _rulesToStringHeadless = function(styleObj){
     }
     return markup;
 }
+
+
+
 var ruleToString = function(propName, value){
     var cssPropName = hyphenateProp(propName);
     if(value instanceof tinycolor) value = value.toHslString();
     return cssPropName + ':' + escapeValueForProp(value, cssPropName) + ';';
 }
+
+
+
 var _uppercasePattern = /([A-Z])/g;
 var msPattern = /^ms-/;
 var hyphenateProp = function(string){
@@ -228,6 +223,9 @@ var hyphenateProp = function(string){
         .toLowerCase()
         .replace(msPattern, '-ms-');
 }
+
+
+
 var escapeValueForProp = function(value, prop){
     return value;
     // Still don't know why I should escape values?!
@@ -397,6 +395,8 @@ _.extend(SmartCSS.prototype, {
 
 })
 
+
+
 var isValidClassName = function(className){
     if(!className) return false;
     // Is valid if the first letter is not a number.
@@ -404,9 +404,12 @@ var isValidClassName = function(className){
     return !isNumber(className[0]);
 }
 
+
+
 var isNumber = function(n){
     return !isNaN(parseFloat(n)) && isFinite(n);
 }
+
 
 
 var validateSelectorObject = function(selectorObject){
