@@ -6,4 +6,4 @@ node_js:
   - "iojs"
   - "iojs-v1.0.4"
 script:
-  - npm test --cover
+  - npm test
