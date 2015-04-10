@@ -152,6 +152,20 @@ describe('SmartCSS', function(){
 
 
 
+        it('should return multiple classes as array', function(){
+            var css = new SmartCSS({});
+            css.setClass('.a', {color: 'red'});
+            css.setClass('.b', {color: 'yellow'});
+            var current = css.getClasses({
+                a : true,
+                b : true
+            }, true);
+            var expected = [css.getClass('a'), css.getClass('b')];
+            expect(current).to.deep.equal(expected);
+        })
+
+
+
         it('should only return the classes set as true', function(){
             var css = new SmartCSS({});
             css.setClass('.a', {color: 'red'});

@@ -261,17 +261,6 @@ _.extend(SmartCSS.prototype, {
 
 
     /**
-     * Returns an object where the key is the friendly class name
-     * and the value is an object with 2 keys: className and style.
-     * @return {Object}
-     */
-    getClassesAsMap: function(){
-        return _.clone(this.__styleClasses);
-    },
-
-
-
-    /**
      * Defines a style.
      * @param {String} name The style name, then you can get the style id with `getClass` or `getClasses`.
      * @param {Object} def The style definition `{color: 'red'}` as javascript object.
