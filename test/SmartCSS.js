@@ -117,7 +117,7 @@ describe('SmartCSS', function(){
 
 
 
-    it('should allow proper content string', function(){
+    it('should allow proper content property as string', function(){
         var css = new SmartCSS({});
         css.setClass('.a', {content: '"string"'});
         var expected = '.' + css.getClass('a') + '{content:"string";}';
@@ -131,6 +131,47 @@ describe('SmartCSS', function(){
         var css = new SmartCSS({});
         expect(css.setClass.bind(css, '.a', {color: 'red'}, {className: '2'})).to.throw(Error, 'Invalid class name');
     })
+
+
+
+    describe('.getClasses()', function(){
+
+
+
+        it('should return multiple classes', function(){
+            var css = new SmartCSS({});
+            css.setClass('.a', {color: 'red'});
+            css.setClass('.b', {color: 'yellow'});
+            var current = css.getClasses({
+                a : true,
+                b : true
+            });
+            var expected = css.getClass('a') + ' ' + css.getClass('b');
+            expect(current).to.be.equal(expected);
+        })
+
+
+
+        it('should only return the classes set as true', function(){
+            var css = new SmartCSS({});
+            css.setClass('.a', {color: 'red'});
+            css.setClass('.b', {color: 'yellow'});
+            css.setClass('.c', {color: 'green'});
+            var current = css.getClasses({
+                a : true,
+                b : false,
+                c : true,
+            });
+            var expected = css.getClass('a') + ' ' + css.getClass('c');
+            expect(current).to.be.equal(expected);
+        })
+
+
+
+    })
+
+
+
 
 
 
