@@ -113,13 +113,11 @@ SmartCSS.deleteStyles = function(){
  */
 SmartCSS.getStylesAsString = function(){
     var contexts = SmartCSS.__data.contexts;
-    var str = '';
+    var str = [];
     contexts.forEach(function(context){
-        context.getStyleClasses().forEach(function(styleClass){
-            str += renderStyleClass(styleClass);
-        })
+        str.push(context.getStylesAsString());
     })
-    return str;
+    return str.join('');
 }
 
 var renderStyleClass = function(styleClass){
@@ -341,6 +339,16 @@ _.extend(SmartCSS.prototype, {
         this.__classNameMap[classId] = className;
         this.__styleClasses[classId + pseudo] = styleClass;
         return this.__styleClasses[classId + pseudo];
+    },
+
+
+
+    getStylesAsString: function(){
+        var str = [];
+        this.getStyleClasses().forEach(function(styleClass){
+            str.push(renderStyleClass(styleClass));
+        });
+        return str.join('');
     }
 
 
