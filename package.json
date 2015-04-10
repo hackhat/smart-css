@@ -4,7 +4,7 @@
   "description": "",
   "main": "src/index.js",
   "scripts": {
-    "test": "./node_modules/mocha/bin/mocha",
+    "test": "istanbul cover --root ./src --hook-run-in-context node_modules/mocha/bin/_mocha -- -R spec",
     "npm prefix": "npm --userconfig=.npmrc"
   },
   "keywords": [
