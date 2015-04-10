@@ -128,7 +128,7 @@ _.extend(SmartCSS.prototype, {
 
 
     /**
-     * Gets the style id of a style name.
+     * Returns the class name (the one that will be really added to the css).
      * Don't add any pseudo things. For example if you set a class like this:
      *
      *     setClass('myClass:hover', ...);
@@ -278,6 +278,17 @@ _.extend(SmartCSS.prototype, {
             str.push(renderStyleClass(styleClass, classNamesAsMap));
         });
         return str.join('');
+    },
+
+
+
+    /**
+     * Adds a new context. This is useful if you don't want to use the
+     * singleton.
+     * @param {core.SmartCSS} smartCSS
+     */
+    addChild: function(smartCSS){
+
     }
 
 

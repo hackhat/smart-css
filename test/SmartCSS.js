@@ -157,6 +157,19 @@ describe('SmartCSS', function(){
 
 
 
+    it.only('should be able to render the childrens\' context', function(){
+        var cssParent = new SmartCSS({});
+        cssParent.setClass('.a', {color: 'red'});
+        var cssChild = new SmartCSS({});
+        cssChild.setClass('.a', {color: 'red'});
+        var expected = '.' + cssParent.getClass('a') + '{color:red;}' +
+                       '.' + cssChild.getClass('a')  + '{color:red;}';
+        var current  = cssParent.getStylesAsString();
+        expect(current).to.be.equal(expected);
+    })
+
+
+
 
     it('should throw an error if className starts with a number', function(){
         var css = new SmartCSS({});
