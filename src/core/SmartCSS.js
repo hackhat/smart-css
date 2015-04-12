@@ -200,8 +200,23 @@ _.extend(SmartCSS.prototype, {
 
 
 
+    /**
+     * Checks whenever the selector object is a valid one
+     * for this library.
+     * @private
+     * @param  {Object} selectorObject
+     */
     __validateSelectorObject: function(selectorObject){
-        validateSelectorObject(selectorObject);
+        // Should only have one selector. Filters out: ".a, .b";
+        if(selectorObject.length > 1){
+            throw new Error('Doesn\'t accept multiple definitions at once.');
+        }
+        // Should only have only 1 class per segment. Filters out: ".a.b";
+        _.forEach(selectorObject[0], function(segment){
+            if(segment.classList.length > 1) throw new Error('Doesn\'t accept multiple classes at once.')
+        })
+
+        // We only care about the first one.
         selectorObject = selectorObject[0];
 
         // Checks whenever ancestors are defined.
@@ -231,6 +246,8 @@ _.extend(SmartCSS.prototype, {
         if(this.__styleClasses[selector]){
             throw new Error('Class id already exists for this selector')
         }
+        // Converts the selector string to a JavaScript object so its easier to
+        // understand what the user defines.
         var selectorObject = Slick.parse(selector);
         this.__validateSelectorObject(selectorObject);
         selectorObject = selectorObject[0];
@@ -321,19 +338,6 @@ var isValidClassName = function(className){
 
 var isNumber = function(n){
     return !isNaN(parseFloat(n)) && isFinite(n);
-}
-
-
-
-var validateSelectorObject = function(selectorObject){
-    // Should only have one selector. Filters out: ".a, .b";
-    if(selectorObject.length > 1){
-        throw new Error('Doesn\'t accept multiple definitions at once.');
-    }
-    // Should only have only 1 class per segment. Filters out: ".a.b";
-    _.forEach(selectorObject[0], function(segment){
-        if(segment.classList.length > 1) throw new Error('Doesn\'t accept multiple classes at once.')
-    })
 }
 
 
