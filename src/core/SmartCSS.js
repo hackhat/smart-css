@@ -389,8 +389,22 @@ var renderSelectorObject = function(selectorObject, classMap){
 
 var ruleToString = function(propName, value){
     var cssPropName = hyphenateProp(propName);
-    if(value instanceof tinycolor) value = value.toHslString();
+    // For example if you have a border like this:
+    //     border: ['1px solid', tinycolor('red')]
+    // Will join them before converting the tinycolor to a css color.
+    if(_.isArray(value)){
+        value = value.map(parseValueAtom).join(' ');
+    }else{
+        value = parseValueAtom(value);
+    }
     return cssPropName + ':' + escapeValueForProp(value, cssPropName) + ';';
+}
+
+
+
+var parseValueAtom = function(value){
+    if(value instanceof tinycolor) return value.toHslString();
+    return value;
 }
 
 

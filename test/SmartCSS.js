@@ -77,32 +77,61 @@ describe('SmartCSS', function(){
 
 
 
-    it('should convert tinycolor to a hsl by default', function(){
-        var css = new SmartCSS();
-        css.setClass('.myClassName', {color: tinycolor('red')});
-        var expected = '.' + css.getClass('myClassName') + '{color:hsl(0, 100%, 50%);}';
-        var current  = SmartCSS.getStylesAsString();
-        expect(current).to.be.equal(expected);
-    })
+
+    describe('colors', function(){
 
 
 
-    it('should allow hsl colors', function(){
-        var css = new SmartCSS();
-        css.setClass('.myClassName', {color: 'hsl(0, 100%, 50%)'});
-        var expected = '.' + css.getClass('myClassName') + '{color:hsl(0, 100%, 50%);}';
-        var current  = SmartCSS.getStylesAsString();
-        expect(current).to.be.equal(expected);
-    })
+        describe('tinycolor', function(){
 
 
 
-    it('should allow normal colors', function(){
-        var css = new SmartCSS();
-        css.setClass('.myClassName', {color: '#FF0000'});
-        var expected = '.' + css.getClass('myClassName') + '{color:#FF0000;}';
-        var current  = SmartCSS.getStylesAsString();
-        expect(current).to.be.equal(expected);
+            it('should convert to a hsl color by default (simple input)', function(){
+                var css = new SmartCSS();
+                css.setClass('.myClassName', {color: tinycolor('red')});
+                var expected = '.' + css.getClass('myClassName') + '{color:hsl(0, 100%, 50%);}';
+                var current  = SmartCSS.getStylesAsString();
+                expect(current).to.be.equal(expected);
+            })
+
+
+
+            it('should convert to a hsl color by default (array input)', function(){
+                var css = new SmartCSS();
+                css.setClass('.a', {
+                    border: ['1px solid', tinycolor('red')]
+                });
+                var expected = '.' + css.getClass('a') + '{border:1px solid hsl(0, 100%, 50%);}';
+                var current  = SmartCSS.getStylesAsString();
+                expect(current).to.be.equal(expected);
+            })
+
+
+
+        })
+
+
+
+        it('should allow hsl colors', function(){
+            var css = new SmartCSS();
+            css.setClass('.myClassName', {color: 'hsl(0, 100%, 50%)'});
+            var expected = '.' + css.getClass('myClassName') + '{color:hsl(0, 100%, 50%);}';
+            var current  = SmartCSS.getStylesAsString();
+            expect(current).to.be.equal(expected);
+        })
+
+
+
+        it('should allow hex colors', function(){
+            var css = new SmartCSS();
+            css.setClass('.myClassName', {color: '#FF0000'});
+            var expected = '.' + css.getClass('myClassName') + '{color:#FF0000;}';
+            var current  = SmartCSS.getStylesAsString();
+            expect(current).to.be.equal(expected);
+        })
+
+
+
     })
 
 
