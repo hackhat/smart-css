@@ -199,6 +199,25 @@ _.extend(SmartCSS.prototype, {
 
 
 
+
+    __validateSelectorObject: function(selectorObject){
+        validateSelectorObject(selectorObject);
+        selectorObject = selectorObject[0];
+
+        // Checks whenever ancestors are defined.
+        _.forEach(selectorObject, function(segment, i){
+            // The last one obviously is not yet added to the set, therefore
+            // no need to test it.
+            var last = selectorObject.length - 1 === i;
+            if(last) return;
+            if(this.getClass(segment.classList[0]) === ''){
+                throw new Error('Ancestor not defined.')
+            }
+        }.bind(this))
+    },
+
+
+
     /**
      * Defines a style.
      * @param {String} name The style name, then you can get the style id with `getClass` or `getClasses`.
@@ -213,19 +232,8 @@ _.extend(SmartCSS.prototype, {
             throw new Error('Class id already exists for this selector')
         }
         var selectorObject = Slick.parse(selector);
-        validateSelectorObject(selectorObject);
+        this.__validateSelectorObject(selectorObject);
         selectorObject = selectorObject[0];
-
-        // Checks whenever ancestors are defined.
-        _.forEach(selectorObject, function(segment, i){
-            // The last one obviously is not yet added to the set, therefore
-            // no need to test it.
-            var last = selectorObject.length - 1 === i;
-            if(last) return;
-            if(this.getClass(segment.classList[0]) === ''){
-                throw new Error('Ancestor not defined.')
-            }
-        }.bind(this))
         var classId = _.last(selectorObject).classList[0];
 
         options = _.extend({
