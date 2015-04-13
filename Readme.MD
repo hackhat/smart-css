@@ -101,6 +101,7 @@ SmartCSS.injectStyles();
    - A new developer can come and create a component without having to look at any
      existing CSS code.
  - Integrates perfectly with the react.js way to thought;
+ - You don't need to use the singleton to render the CSS;
 
 
 
