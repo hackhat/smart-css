@@ -23,24 +23,29 @@ describe('SmartCSS', function(){
 
 
 
-    it('should create a final class including the class name when (prefixClassId=default)', function(){
-        var css = new SmartCSS({});
+    it('should include the class id in the class name when (debug=default)', function(){
+        var css = new SmartCSS();
         css.setClass('.myClassName', {color: 'red'});
-        var expected = '.' + css.getClass('myClassName') + '{color:red;}';
         var current  = SmartCSS.getStylesAsString();
-        expect(current).to.be.equal(expected);
-        expect(_.startsWith(expected, '.myClassName')).to.be.ok;
+        expect(current).to.have.string('myClassName');
     })
 
 
 
-    it('should create a final class not including the class name when (prefixClassId=false)', function(){
-        var css = new SmartCSS({prefixClassId: false});
+    it('should include the class id in the class name when (debug=true)', function(){
+        var css = new SmartCSS({debug: true});
         css.setClass('.myClassName', {color: 'red'});
-        var expected = '.' + css.getClass('myClassName') + '{color:red;}';
         var current  = SmartCSS.getStylesAsString();
-        expect(current).to.be.equal(expected);
-        expect(_.startsWith(expected, '.c-myClassName')).to.be.false;
+        expect(current).to.have.string('myClassName');
+    })
+
+
+
+    it('should not include the class id in the class name when (debug=false)', function(){
+        var css = new SmartCSS({debug: false});
+        css.setClass('.myClassName', {color: 'red'});
+        var current  = SmartCSS.getStylesAsString();
+        expect(current).to.not.have.string('myClassName');
     })
 
 

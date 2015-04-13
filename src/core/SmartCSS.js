@@ -20,7 +20,7 @@ var util       = require('util');
  *                part or the dot prefix.
  *
  * @param {Object} options
- * @param {Boolean} [options.prefixClassId=true]
+ * @param {Boolean} [options.debug=true]
  *        Prefixes all style ids with the style name.
  *        For example if you you set this to true the class names
  *        generated will have the prefix the style name and then
@@ -28,12 +28,12 @@ var util       = require('util');
  */
 var SmartCSS = function(options){
     options = _.extend({
-        name          : void 0,
-        prefixClassId : true,
+        name  : void 0,
+        debug : true,
     }, options);
 
     this.__name          = options.name;
-    this.__prefixClassId = options.prefixClassId;
+    this.__debug         = options.debug;
     this.__childContexts = [];
 
     /**
@@ -272,7 +272,7 @@ _.extend(SmartCSS.prototype, {
             if(this.__styleClasses[classId]){
                 className = this.__styleClasses[classId].getClassName();
             }else{
-                if(this.__prefixClassId){
+                if(this.__debug){
                     className += classId;
                     if(this.__name){
                         className = this.__name + '-' + className
