@@ -1,20 +1,37 @@
-var _         = require('lodash');
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <title>The source code</title>
+  <link href="../resources/prettify/prettify.css" type="text/css" rel="stylesheet" />
+  <script type="text/javascript" src="../resources/prettify/prettify.js"></script>
+  <style type="text/css">
+    .highlight { display: block; background-color: #ddd; }
+  </style>
+  <script type="text/javascript">
+    function highlight() {
+      document.getElementById(location.hash.replace(/#/, "")).className = "highlight";
+    }
+  </script>
+</head>
+<body onload="prettyPrint(); highlight();">
+  <pre class="prettyprint lang-js">var _         = require('lodash');
 var tinycolor = require('tinycolor2');
 
 
 
 
 
-/**
- * @class utils
+<span id='utils'>/**
+</span> * @class utils
  * An utility object.
  */
 var utils = {};
 
 
 
-/**
- * @method isValidClassName
+<span id='utils-method-isValidClassName'>/**
+</span> * @method isValidClassName
  * Checks whenever is a valid class name.
  * @param  {String} className
  * @return {Boolean} Returns true if is a valid class, false other ways.
@@ -28,8 +45,8 @@ utils.isValidClassName = function(className){
 
 
 
-/**
- * @method renderStyleClass
+<span id='utils-method-renderStyleClass'>/**
+</span> * @method renderStyleClass
  * Renders a core.StyleClass to string.
  * @param  {core.StyleClass} styleClass
  * @param  {Object} classNamesAsMap
@@ -52,21 +69,21 @@ utils.renderStyleClass = function(styleClass, classNamesAsMap){
 
 
 
-/**
- * @method __isNumber
+<span id='utils-method-__isNumber'>/**
+</span> * @method __isNumber
  * Checks whenever is a number. If is a string like `'1'` is considered a number.
  * @private
  * @param  {*} n
  * @return {Boolean} Returns true if is a number, false other ways.
  */
 utils.__isNumber = function(n){
-    return !isNaN(parseFloat(n)) && isFinite(n);
+    return !isNaN(parseFloat(n)) &amp;&amp; isFinite(n);
 }
 
 
 
-/**
- * @method __renderSelectorObject
+<span id='utils-method-__renderSelectorObject'>/**
+</span> * @method __renderSelectorObject
  * Renders a css header definition from the selectorObject
  * and a classMap. The classMap is needed to replace the class
  * names from the selectorObject.
@@ -95,8 +112,8 @@ utils.__renderSelectorObject = function(selectorObject, classMap){
 
 
 
-/**
- * @method __ruleToString
+<span id='utils-method-__ruleToString'>/**
+</span> * @method __ruleToString
  * Converts a rule name and rule value to a single CSS string.
  * @private
  * @param  {String} propName
@@ -118,8 +135,8 @@ utils.__ruleToString = function(propName, value){
 
 
 
-/**
- * @method __parseValueAtom
+<span id='utils-method-__parseValueAtom'>/**
+</span> * @method __parseValueAtom
  * Parses a single value to be compatible with CSS.
  * @private
  * @param  {*} value
@@ -132,8 +149,8 @@ utils.__parseValueAtom = function(value){
 
 
 
-/**
- * @property __uppercasePattern
+<span id='utils-property-__uppercasePattern'>/**
+</span> * @property __uppercasePattern
  * Cached regexp pattern.
  * @private
  * @type {RegExp}
@@ -142,8 +159,8 @@ utils.__uppercasePattern = /([A-Z])/g;
 
 
 
-/**
- * @property __msPattern
+<span id='utils-property-__msPattern'>/**
+</span> * @property __msPattern
  * Cached regexp pattern.
  * @private
  * @type {RegExp}
@@ -152,16 +169,16 @@ utils.__msPattern = /^ms-/;
 
 
 
-/**
- * @method __hyphenateProp
+<span id='utils-method-__hyphenateProp'>/**
+</span> * @method __hyphenateProp
  * Hypernates a CSS property.
  * @private
  * @param  {String} string
  * @return {String} Hypernated property.
  */
 utils.__hyphenateProp = function(string){
-    // MozTransition -> -moz-transition
-    // msTransition -> -ms-transition. Notice the lower case m
+    // MozTransition -&gt; -moz-transition
+    // msTransition -&gt; -ms-transition. Notice the lower case m
     // http://modernizr.com/docs/#prefixed
     // thanks a lot IE
     return string.replace(utils.__uppercasePattern, '-$1')
@@ -171,8 +188,8 @@ utils.__hyphenateProp = function(string){
 
 
 
-/**
- * @method __escapeValueForProp
+<span id='utils-method-__escapeValueForProp'>/**
+</span> * @method __escapeValueForProp
  * Noop
  * @private
  * @param  {String} value
@@ -190,3 +207,6 @@ utils.__escapeValueForProp = function(value, prop){
 
 
 module.exports = utils;
+</pre>
+</body>
+</html>

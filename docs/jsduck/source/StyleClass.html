@@ -22,6 +22,13 @@
 
 <span id='core-StyleClass'>/**
 </span> * @class core.StyleClass
+ * Contains all the data necessary to create a style rule, complete with header
+ * and body.
+ * @param {Object} options
+ * @param {String} options.className Class name that will be set in your html.
+ * @param {Object} options.styleDef Style definition.
+ * @param {Object} options.selectorObject Rule header as object.
+ * @param {String} options.media Media string for this style.
  */
 var StyleClass = function(options){
     options = _.extend({
@@ -44,25 +51,36 @@ _.extend(StyleClass.prototype, {
 
 
 
-    // This is the class Id. Should be called like this.
+<span id='core-StyleClass-method-getClassName'>    /**
+</span>     * @return {String} Class name of this style class.
+     */
     getClassName: function(){
         return this.__className;
     },
 
 
 
+<span id='core-StyleClass-method-getStyleDef'>    /**
+</span>     * @return {Object} A copy of #.__styleDef.
+     */
     getStyleDef: function(){
-        return this.__styleDef;
+        return _.clone(this.__styleDef);
     },
 
 
 
+<span id='core-StyleClass-method-getSelectorObject'>    /**
+</span>     * @return {Object} A copy of #.__selectorObject.
+     */
     getSelectorObject: function(){
-        return this.__selectorObject;
+        return _.clone(this.__selectorObject);
     },
 
 
 
+<span id='core-StyleClass-method-getMedia'>    /**
+</span>     * @return {String} Media CSS.
+     */
     getMedia: function(){
         return this.__media;
     }

@@ -5,6 +5,13 @@ var _ = require('lodash');
 
 /**
  * @class core.StyleClass
+ * Contains all the data necessary to create a style rule, complete with header
+ * and body.
+ * @param {Object} options
+ * @param {String} options.className Class name that will be set in your html.
+ * @param {Object} options.styleDef Style definition.
+ * @param {Object} options.selectorObject Rule header as object.
+ * @param {String} options.media Media string for this style.
  */
 var StyleClass = function(options){
     options = _.extend({

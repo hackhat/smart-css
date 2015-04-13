@@ -19,26 +19,30 @@
 var tinycolor  = require('tinycolor2');
 var StyleClass = require('./StyleClass');
 var Slick      = require('slick');
-var util       = require('util');
+var utils      = require('../utils');
 
-// console.log(util.inspect(Slick.parse('.a:hover .basda2-12::select'), {depth:12}));
 
 
 
 
 <span id='core-SmartCSS'>/**
 </span> * @class core.SmartCSS
- * An utility class which can be used to save CSS styles
- * and get their id. Use an instance per module.
+ * This is the main class you will be using in smart-css.
+ * When you do `require('smart-css')` you will get this class. (Remember you need to instance it.)
+ *
  *
  * Definitions:
- *  - Class id: is the name in smart-css, normally is semantic and needs context; A class
- *              id only matters if has a SmartCSS instance associated. Alone means nothing.
- *  - Class name: is the real css class, normally is ugly and short; Doesn't include the pseudo
- *                part or the dot prefix.
+ *
+ *  - **Class id:** is the name in smart-css, normally is semantic and needs context; A class
+ *                  id only matters if has a SmartCSS instance associated. Alone means nothing.
+ *  - **Class name:** is the real css class, normally is ugly and short; Doesn't include the pseudo
+ *                    part or the dot prefix.
  *
  * @param {Object} options
- * @param {Boolean} [options.prefixClassId=true]
+ * @param {String|undefined} [options.name=undefined]
+ *        Provides a name for this context. If you enable debug you will see this
+ *        `options.name` in your generated class names.
+ * @param {Boolean} [options.debug=true]
  *        Prefixes all style ids with the style name.
  *        For example if you you set this to true the class names
  *        generated will have the prefix the style name and then
@@ -46,10 +50,31 @@ var util       = require('util');
  */
 var SmartCSS = function(options){
     options = _.extend({
-        prefixClassId : true,
-    }, SmartCSS.getDefaultOptions, options);
+        name  : undefined,
+        debug : true,
+    }, options);
 
-    this.__prefixClassId = options.prefixClassId;
+<span id='core-SmartCSS-property-__name'>    /**
+</span>     * The name of this SmartCSS instance. If #__debug is set to true then it will render this name
+     * in the class names.
+     * @private
+     * @type {String|undefined}
+     */
+    this.__name = options.name;
+
+<span id='core-SmartCSS-property-__debug'>    /**
+</span>     * If the parameter is set to debug then you will get longer and more descriptive class names.
+     * @private
+     * @type {Boolean}
+     */
+    this.__debug = options.debug;
+
+<span id='core-SmartCSS-property-__childContexts'>    /**
+</span>     * Contains all the SmartCSS instances that are a child to this SmartCSS instance.
+     * @private
+     * @type {Array}
+     */
+    this.__childContexts = [];
 
 <span id='core-SmartCSS-property-__styleClasses'>    /**
 </span>     * The key is the styleName and the value is an object like this:
@@ -58,15 +83,22 @@ var SmartCSS = function(options){
      * @private
      */
     this.__styleClasses = {};
-    // The key is classId and maps to a className.
+
+<span id='core-SmartCSS-property-__classNameMap'>    /**
+</span>     * The key is classId and maps to a className.
+     * @type {Object}
+     * @private
+     */
     this.__classNameMap = {};
+
     SmartCSS.__registerContext(this);
 }
 
 
 
-<span id='core-SmartCSS-property-'>/**
-</span> * @private
+<span id='core-SmartCSS-property-__data'>/**
+</span> * @property {Object} __data Contains static information about SmartCSS classes.
+ * @private
  * @type {Object}
  */
 SmartCSS.__data = {
@@ -77,8 +109,10 @@ SmartCSS.__data = {
 
 
 
-<span id='core-SmartCSS-method-__registerContext'>/**
-</span> * Register a context.
+<span id='core-SmartCSS-static-method-__registerContext'>/**
+</span> * @method __registerContext
+ * Register a context.
+ * @static
  * @private
  * @param  {core.SmartCSS} context
  */
@@ -91,9 +125,11 @@ SmartCSS.__registerContext = function(context){
 // Not yet used. In the future we can use this to make shorter ids.
 // var alphabet = &quot;abcdefghijklmnopqrstuvwxyz&quot;;
 // alphabet = (alphabet + alphabet.toUpperCase()).split('');
-<span id='core-SmartCSS-method-'>/**
-</span> * Gets a new id. Is a singleton therefore it will always be different.
+<span id='core-SmartCSS-static-method-__getNextId'>/**
+</span> * @method __getNextId
+ * Gets a new id. Is a singleton therefore it will always be different.
  * @private
+ * @static
  * @return {String}
  */
 SmartCSS.__getNextId = function(){
@@ -102,8 +138,10 @@ SmartCSS.__getNextId = function(){
 
 
 
-<span id='core-SmartCSS-property-'>/**
-</span> * After you add the styles call this function to inject the styles into your DOM.
+<span id='core-SmartCSS-static-method-injectStyles'>/**
+</span> * @method injectStyles
+ * After you add the styles call this function to inject the styles into your DOM.
+ * @static
  */
 SmartCSS.injectStyles = function(){
     var tag = document.createElement('style');
@@ -113,9 +151,11 @@ SmartCSS.injectStyles = function(){
 
 
 
-<span id='core-SmartCSS-property-'>/**
-</span> * Deletes all the cached styles. This will not affect the current applied styles.
+<span id='core-SmartCSS-static-method-deleteStyles'>/**
+</span> * @method deleteStyles
+ * Deletes all the cached styles. This will not affect the current applied styles.
  * Only affects future calls to #injectStyles or #getStylesAsString.
+ * @static
  */
 SmartCSS.deleteStyles = function(){
     SmartCSS.__data.styles = {};
@@ -124,9 +164,10 @@ SmartCSS.deleteStyles = function(){
 
 
 
-<span id='core-SmartCSS-property-'>/**
-</span> * After you add the styles call this function to get the styles as string.
- * @todo: add it as an instance method.
+<span id='core-SmartCSS-static-method-getStylesAsString'>/**
+</span> * @method getStylesAsString
+ * After you add the styles call this function to get the styles as string.
+ * @static
  */
 SmartCSS.getStylesAsString = function(){
     var contexts = SmartCSS.__data.contexts;
@@ -146,7 +187,7 @@ _.extend(SmartCSS.prototype, {
 
 
 <span id='core-SmartCSS-method-getClass'>    /**
-</span>     * Gets the style id of a style name.
+</span>     * Returns the class name (the one that will be really added to the css).
      * Don't add any pseudo things. For example if you set a class like this:
      *
      *     setClass('myClass:hover', ...);
@@ -164,7 +205,7 @@ _.extend(SmartCSS.prototype, {
      */
     getClass: function(classId){
         // Warn if class is missing and return '' by default.
-        if(this.__classNameMap[classId] === void 0){
+        if(this.__classNameMap[classId] === undefined){
             console.warn('Class &quot;' + classId + '&quot; not set.');
             return '';
         }
@@ -173,13 +214,20 @@ _.extend(SmartCSS.prototype, {
 
 
 
+<span id='core-SmartCSS-method-getClassNameMap'>    /**
+</span>     * Returns a copy of #__classNameMap, look at it for more info.
+     * The key is the class id and the value is the class name.
+     * @return {Object}
+     */
     getClassNameMap: function(){
-        // @todo: return a copy;
-        return this.__classNameMap;
+        return _.clone(this.__classNameMap);
     },
 
 
 
+<span id='core-SmartCSS-method-getStyleClasses'>    /**
+</span>     * @return {Array} An array with all the style classes added.
+     */
     getStyleClasses: function(){
         return _.values(this.__styleClasses);
     },
@@ -216,20 +264,26 @@ _.extend(SmartCSS.prototype, {
 
 
 
-<span id='core-SmartCSS-method-setClass'>    /**
-</span>     * Defines a style.
-     * @param {String} name The style name, then you can get the style id with `getClass` or `getClasses`.
-     * @param {Object} def The style definition `{color: 'red'}` as javascript object.
-     * @param {Object} options
-     * @param {String} options.className
-     * @param {String} options.hover
-     * @param {String} options.media
+
+<span id='core-SmartCSS-method-__validateSelectorObject'>    /**
+</span>     * Checks whenever the selector object is a valid one
+     * for this library.
+     * @private
+     * @param  {Object} selectorObject
      */
-    setClass: function(selector, styleDef, options){
-        var selectorObject = Slick.parse(selector);
-        validateSelectorObject(selectorObject);
+    __validateSelectorObject: function(selectorObject){
+        // Should only have one selector. Filters out: &quot;.a, .b&quot;;
+        if(selectorObject.length &gt; 1){
+            throw new Error('Doesn\'t accept multiple definitions at once.');
+        }
+        // Should only have only 1 class per segment. Filters out: &quot;.a.b&quot;;
+        _.forEach(selectorObject[0], function(segment){
+            if(segment.classList.length &gt; 1) throw new Error('Doesn\'t accept multiple classes at once.')
+        })
+
+        // We only care about the first one.
         selectorObject = selectorObject[0];
-        // console.log(selectorObject)
+
         // Checks whenever ancestors are defined.
         _.forEach(selectorObject, function(segment, i){
             // The last one obviously is not yet added to the set, therefore
@@ -240,165 +294,107 @@ _.extend(SmartCSS.prototype, {
                 throw new Error('Ancestor not defined.')
             }
         }.bind(this))
+    },
+
+
+
+<span id='core-SmartCSS-method-setClass'>    /**
+</span>     * Defines a style.
+     * @param {String} name The style name, then you can get the style id with `getClass` or `getClasses`.
+     * @param {Object} def The style definition `{color: 'red'}` as javascript object.
+     * @param {Object} options
+     * @param {String} options.className
+     * @param {String} options.hover
+     * @param {String} options.media
+     */
+    setClass: function(selector, styleDef, options){
+        if(this.__styleClasses[selector]){
+            throw new Error('Class id already exists for this selector')
+        }
+        // Converts the selector string to a JavaScript object so its easier to
+        // understand what the user defines.
+        var selectorObject = Slick.parse(selector);
+        this.__validateSelectorObject(selectorObject);
+        selectorObject = selectorObject[0];
         var classId = _.last(selectorObject).classList[0];
-        var pseudo  = selector.split(':');
-        pseudo[0] = '';
-        pseudo = pseudo.join(':');
 
         options = _.extend({
-            className : void 0,
-            pseudo    : pseudo,
+            className : undefined,
             classId   : classId,
         }, options)
 
-        if(options.className === void 0){
-            var className = '';
+        if(options.className !== undefined &amp;&amp; this.getClass(classId) !== ''){
+            throw new Error('Can\'t use hardcoded class name because already exists one for the same class id');
+        }
+
+        var className = options.className;
+        if(options.className === undefined){
+            className = '';
             // If a class with the same classId has been defined then reuse
             // its className so :hover and other pseudo things works correctly.
             if(this.__styleClasses[classId]){
                 className = this.__styleClasses[classId].getClassName();
             }else{
-                if(this.__prefixClassId){
+                if(this.__debug){
                     className += classId;
+                    if(this.__name){
+                        className = this.__name + '-' + className
+                    }
                 }else{
                     className = '_' + className;
                 }
             }
             className += SmartCSS.__getNextId();
         }
-        if(!isValidClassName(className)){
+        if(!utils.isValidClassName(className)){
             throw new Error('Invalid class name');
         }
         options.className = className;
 
         var styleClass = new StyleClass({
             className      : options.className,
+            selectorString : selector,
             selectorObject : selectorObject,
             styleDef       : styleDef,
             media          : options.media,
         })
         this.__classNameMap[classId] = className;
-        this.__styleClasses[classId + pseudo] = styleClass;
-        return this.__styleClasses[classId + pseudo];
+        this.__styleClasses[selector] = styleClass;
+        return this.__styleClasses[selector];
     },
 
 
 
+<span id='core-SmartCSS-method-getStylesAsString'>    /**
+</span>     * @return {String} All styles added as string.
+     */
     getStylesAsString: function(){
         var str = [];
         var classNamesAsMap = this.getClassNameMap();
         this.getStyleClasses().forEach(function(styleClass){
-            str.push(renderStyleClass(styleClass, classNamesAsMap));
+            str.push(utils.renderStyleClass(styleClass, classNamesAsMap));
         });
+        this.__childContexts.forEach(function(context){
+            str.push(context.getStylesAsString());
+        })
         return str.join('');
+    },
+
+
+
+<span id='core-SmartCSS-method-addChildContext'>    /**
+</span>     * Adds a new context. This is useful if you don't want to use the
+     * singleton.
+     * @param {core.SmartCSS} smartCSS
+     */
+    addChildContext: function(smartCSS){
+        if(_.includes(this.__childContexts, smartCSS)) throw new Error('The same child context already exists')
+        this.__childContexts.push(smartCSS);
     }
 
 
 
 })
-
-
-
-var isValidClassName = function(className){
-    if(!className) return false;
-    // Is valid if the first letter is not a number.
-    // @todo: a stronger check.
-    return !isNumber(className[0]);
-}
-
-
-
-var isNumber = function(n){
-    return !isNaN(parseFloat(n)) &amp;&amp; isFinite(n);
-}
-
-
-
-var validateSelectorObject = function(selectorObject){
-    // Should only have one selector. Filters out: &quot;.a, .b&quot;;
-    if(selectorObject.length &gt; 1){
-        throw new Error('Doesn\'t accept multiple definitions at once.');
-    }
-    // Should only have only 1 class per segment. Filters out: &quot;.a.b&quot;;
-    _.forEach(selectorObject[0], function(segment){
-        if(segment.classList.length &gt; 1) throw new Error('Doesn\'t accept multiple classes at once.')
-    })
-}
-
-
-
-var renderStyleClass = function(styleClass, classNamesAsMap){
-    var styleDef = styleClass.getStyleDef();
-    var styleBody = '';
-    for(var key in styleDef){
-        styleBody += ruleToString(key, styleDef[key]);
-    }
-    var styleHeader = renderSelectorObject(styleClass.getSelectorObject(), classNamesAsMap);
-    var styleFull = styleHeader + '{' + styleBody + '}';
-    var media = styleClass.getMedia();
-    if(media){
-        styleFull = '@media (' + media + '){' + styleFull + '}'
-    }
-    return styleFull;
-}
-
-
-
-<span id='core-SmartCSS-property-'>/**
-</span> * Renders a css header definition from the selectorObject
- * and a classMap. The classMap is needed to replace the class
- * names from the selectorObject.
- */
-var renderSelectorObject = function(selectorObject, classMap){
-    var str = [];
-    var getClassName = function(classId){
-        return classMap[classId];
-    }
-    // console.log('&gt;&gt;',selectorObject)
-    _.forEach(selectorObject, function(segment, i){
-        if(i !== 0) str.push(segment.combinator);
-        str.push('.' + getClassName(segment.classList[0]));
-        _.forEach(segment.pseudos, function(pseudo){
-            if(pseudo.type === 'class')   str.push(':')
-            if(pseudo.type === 'element') str.push('::')
-            str.push(pseudo.name);
-            if(pseudo.value/* !== void 0 || pseudo.value !== null*/){
-                str.push('(' + pseudo.value + ')');
-            }
-        })
-    })
-    return str.join('');
-}
-
-
-
-var ruleToString = function(propName, value){
-    var cssPropName = hyphenateProp(propName);
-    if(value instanceof tinycolor) value = value.toHslString();
-    return cssPropName + ':' + escapeValueForProp(value, cssPropName) + ';';
-}
-
-
-
-var _uppercasePattern = /([A-Z])/g;
-var msPattern = /^ms-/;
-var hyphenateProp = function(string){
-    // MozTransition -&gt; -moz-transition
-    // msTransition -&gt; -ms-transition. Notice the lower case m
-    // http://modernizr.com/docs/#prefixed
-    // thanks a lot IE
-    return string.replace(_uppercasePattern, '-$1')
-        .toLowerCase()
-        .replace(msPattern, '-ms-');
-}
-
-
-
-var escapeValueForProp = function(value, prop){
-    return value;
-    // Still don't know why I should escape values?!
-    // return escapeHTML(value);
-}
 
 
 
