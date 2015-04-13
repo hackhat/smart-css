@@ -13,73 +13,82 @@ Is very easy to get started:
  - Install the library with `npm install smart-css --save`;
  - Use it in your app like this:
 
-    ```javascript
-    // In componentA.js
-    // Creates a new namespace/context with the `css` variable where you 
-    // add the componentA's styles.
-    var SmartCSS = require('smart-css');
-    var css      = new SmartCSS();
-    var React    = require('react');
-    // You can name a style without worring about other
-    // components because you are adding all the styles
-    // to the componentA only.
-    css.setClass('.root', {
-        background: 'red'
-    })
-    css.setClass('.root:hover', {
-        background: 'green'
-    })
+**componentA.js:**
+```javascript
+// Creates a new namespace/context with the `css` variable where you 
+// add the componentA's styles.
+var SmartCSS = require('smart-css');
+var css      = new SmartCSS();
+var React    = require('react');
+// You can name a style without worring about other
+// components because you are adding all the styles
+// to the componentA only.
+css.setClass('.root', {
+    background: 'red'
+})
+css.setClass('.root:hover', {
+    background: 'green'
+})
 
-    // Your component render method will look like this:
-    React.createClass({
-        render: function(){
-            return React.DOM.div({
-                // This will return a string with the classes that you set
-                // true.
-                className : css.getClass('root')
+React.createClass({
+    render: function(){
+        return React.DOM.div({
+            // This will return a string with the classes that you set
+            // true.
+            className : css.getClass('root')
+        })
+    }
+});
+```
+
+**componentB.js:**
+```javascript
+// In
+// Creates a new context, only for componentB.
+var SmartCSS = require('smart-css');
+var css      = new SmartCSS();
+var React    = require('react');
+// Notice how we used the exact class name as componentA's.
+// This is the power of namespaces, you can keep the name
+// you want without worrying about conflicts with other
+// classes you defined.
+css.setClass('.root', {
+    background: 'yellow'
+})
+css.setClass('.colorBlue', {
+    color: 'blue'
+})
+// Here you can use pure css, so when the element with the 
+// `root` class is hovered the element with class `link`
+// will have the color set to green.
+css.setClass('.root:hover .link', {
+    color: 'green'
+})
+
+React.createClass({
+    render: function(){
+        return React.DOM.li({
+            className : css.getClasses({
+                root      : true,
+                colorBlue : true,
             })
-        }
-    });
+        },
+            React.DOM.a({
+                className: css.getClass('link')
+            })
+        )
+    }
+});
+```
 
-    // In componentB.js
-    // Creates a new context, only for componentB.
-    var SmartCSS = require('smart-css');
-    var css      = new SmartCSS();
-    var React    = require('react');
-    // Notice how we used the exact class name as componentA's.
-    // This is the power of namespaces, you can keep the name
-    // you want without worrying about conflicts with other
-    // classes you defined.
-    css.setClass('.root', {
-        background: 'yellow'
-    })
-    css.setClass('.colorBlue', {
-        color: 'blue'
-    })
-    // Here you can use pure css, so when the element with the 
-    // `root` class is hovered the element with class `link`
-    // will have the color set to green.
-    css.setClass('.root:hover .link', {
-        color: 'green'
-    })
-    React.createClass({
-        render: function(){
-            return React.DOM.li({
-                className : css.getClasses({
-                    root      : true,
-                    colorBlue : true,
-                })
-            },
-                React.DOM.a({
-                    className: css.getClass('link')
-                })
-            )
-        }
-    });
-    // Then apply all the styles, only after this command is ran
-    // your styles are added to the DOM.
-    SmartCSS.injectStyles();
-    ```
+**index.js:**
+```javascript
+// Then apply all the styles, only after this command is ran
+// your styles are added to the DOM.
+require('./componentA');
+require('./componentB');
+SmartCSS.injectStyles();
+```
 
 
 
@@ -108,22 +117,22 @@ Is very easy to get started:
 
 All examples expect you to set the setup code before:
 
-    ```javascript
-    var SmartCSS = require('smart-css');
-    var css      = new SmartCSS();
-    ```
+```javascript
+var SmartCSS = require('smart-css');
+var css      = new SmartCSS();
+```
 
 
 ### Add a hover style
 
-    ```javascript
-    css.setClass('.root', {
-        background: 'red'
-    })
-    css.setClass('.root:hover', {
-        background: 'blue'
-    })
-    ```
+```javascript
+css.setClass('.root', {
+    background: 'red'
+})
+css.setClass('.root:hover', {
+    background: 'blue'
+})
+```
 
 
 
