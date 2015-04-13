@@ -45,6 +45,17 @@ describe('SmartCSS', function(){
 
 
 
+    it('should allow to add the prefix of the component', function(){
+        var css = new SmartCSS({
+            name: 'myComponentName'
+        });
+        css.setClass('.a', {color: 'red'});
+        var current  = SmartCSS.getStylesAsString();
+        expect(current).to.have.string('myComponentName');
+    })
+
+
+
     it('should use the same class name for the same class id', function(){
         var css = new SmartCSS({});
         css.setClass('.a', {color: 'red'});

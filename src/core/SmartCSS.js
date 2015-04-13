@@ -284,7 +284,7 @@ _.extend(SmartCSS.prototype, {
         options.className = className;
 
         var styleClass = new StyleClass({
-            className   : options.className,
+            className      : options.className,
             selectorString : selector,
             selectorObject : selectorObject,
             styleDef       : styleDef,
