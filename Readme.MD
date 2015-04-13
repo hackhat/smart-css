@@ -4,6 +4,7 @@ Write CSS in JavaScript with namespaces, proper names, no conflicts and expected
 
 Read the **[API](https://rawgit.com/hackhat/smart-css/v1.0.1/docs/jsduck/index.html)**.
 
+[Example](https://github.com/hackhat/fluxmax-smart-css/tree/ui-test).
 
 
 ## Get started
