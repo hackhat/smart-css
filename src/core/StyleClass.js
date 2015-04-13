@@ -3,6 +3,7 @@ var _ = require('lodash');
 
 
 
+
 /**
  * @class core.StyleClass
  * Contains all the data necessary to create a style rule, complete with header
