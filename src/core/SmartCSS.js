@@ -247,7 +247,6 @@ _.extend(SmartCSS.prototype, {
 
 
 
-
     /**
      * Checks whenever the selector object is a valid one
      * for this library.
