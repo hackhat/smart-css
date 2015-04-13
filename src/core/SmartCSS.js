@@ -28,9 +28,11 @@ var util       = require('util');
  */
 var SmartCSS = function(options){
     options = _.extend({
+        name          : void 0,
         prefixClassId : true,
-    }, SmartCSS.getDefaultOptions, options);
+    }, options);
 
+    this.__name          = options.name;
     this.__prefixClassId = options.prefixClassId;
     this.__childContexts = [];
 
@@ -272,6 +274,9 @@ _.extend(SmartCSS.prototype, {
             }else{
                 if(this.__prefixClassId){
                     className += classId;
+                    if(this.__name){
+                        className = this.__name + '-' + className
+                    }
                 }else{
                     className = '_' + className;
                 }
@@ -369,7 +374,6 @@ var renderSelectorObject = function(selectorObject, classMap){
     var getClassName = function(classId){
         return classMap[classId];
     }
-    // console.log('>>',selectorObject)
     _.forEach(selectorObject, function(segment, i){
         if(i !== 0) str.push(segment.combinator);
         str.push('.' + getClassName(segment.classList[0]));
@@ -377,7 +381,7 @@ var renderSelectorObject = function(selectorObject, classMap){
             if(pseudo.type === 'class')   str.push(':')
             if(pseudo.type === 'element') str.push('::')
             str.push(pseudo.name);
-            if(pseudo.value/* !== void 0 || pseudo.value !== null*/){
+            if(pseudo.value){
                 str.push('(' + pseudo.value + ')');
             }
         })
