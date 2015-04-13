@@ -27,25 +27,36 @@ _.extend(StyleClass.prototype, {
 
 
 
-    // This is the class Id. Should be called like this.
+    /**
+     * @return {String} Class name of this style class.
+     */
     getClassName: function(){
         return this.__className;
     },
 
 
 
+    /**
+     * @return {Object} A copy of #.__styleDef.
+     */
     getStyleDef: function(){
-        return this.__styleDef;
+        return _.clone(this.__styleDef);
     },
 
 
 
+    /**
+     * @return {Object} A copy of #.__selectorObject.
+     */
     getSelectorObject: function(){
-        return this.__selectorObject;
+        return _.clone(this.__selectorObject);
     },
 
 
 
+    /**
+     * @return {String} Media CSS.
+     */
     getMedia: function(){
         return this.__media;
     }
