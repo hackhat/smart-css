@@ -93,6 +93,15 @@ describe('SmartCSS', function(){
 
 
 
+    it('should allow to add arbitrary css rules', function(){
+        var css = new SmartCSS();
+        css.setRule('body', {color: 'red'});
+        var current  = SmartCSS.getStylesAsString();
+        expect(current).to.be.equal('body{color:red;}');
+    })
+
+
+
 
     describe('colors', function(){
 
