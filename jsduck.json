@@ -1,7 +1,7 @@
 {
     "--": ["./src"],
     "--title": "smart-css API & Docs",
-    "--output": "./docs/jsduck",
-    "--seo": true
+    "--output": "./docs/jsduck"
+    // "--seo": true
     // "--guides": "./docs/guides/guides.json"
 }
