@@ -4,7 +4,7 @@
 
 Write CSS in JavaScript with namespaces, proper names, no conflicts and expected results for react.js. 
 
-Read the **[API](https://rawgit.com/hackhat/smart-css/v1.0.1/docs/jsduck/index.html)**.
+Read the **[API](https://rawgit.com/hackhat/smart-css/v1.0.2/docs/jsduck/index.html)**.
 
 [Example](https://github.com/hackhat/fluxmax-smart-css/tree/ui-test).
 
@@ -106,15 +106,16 @@ SmartCSS.injectStyles();
  - Integrates perfectly with the react.js way to thought;
  - You don't need to use the singleton to render the CSS;
  - Can handle transitions in react (yes, you can write custom class names);
+ - No need to use a singleton to store styles;
 
 
 
 ## Roadmap
 
- - Remove the singleton, is bad practice and can mess up things;
  - Add auto prefix for vendors;
  - Find a better way to handle measurements;
  - Find a better way to set certain properties that are difficult to be written as string; For example write an object instead of a big nasty string;
+ - Make a plugin for webpack to output the CSS to a CSS file for production mode;
 
 
 
