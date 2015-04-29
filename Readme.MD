@@ -155,16 +155,6 @@ Notice how you have defined the "root" class twice but there is no conflict beca
 
 
 
-## Examples:
-
-All examples expect you to set the setup code before:
-
-```javascript
-var SmartCSS = require('smart-css');
-var css      = new SmartCSS();
-```
-
-
 ### Add a hover style
 
 ```javascript
