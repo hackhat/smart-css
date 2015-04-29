@@ -93,6 +93,31 @@ describe('SmartCSS', function(){
 
 
 
+    it.only('should allow to add arbitrary css rules', function(){
+        var css1 = new SmartCSS();
+        css1.setClass('.root', {
+            background: 'red'
+        })
+        css1.setClass('.root:hover', {
+            background: 'green'
+        })
+        var css2 = new SmartCSS();
+        css2.setClass('.root', {
+            background: 'yellow'
+        })
+        css2.setClass('.colorBlue', {
+            color: 'blue'
+        })
+        css2.setClass('.root:hover .link', {
+            color: 'green'
+        })
+        console.log('1 ' + css1.getStylesAsString())
+        console.log('2 ' + css2.getStylesAsString())
+
+    })
+
+
+
     // it('should allow to add arbitrary css rules', function(){
     //     var css = new SmartCSS();
     //     css.setRule('body', {color: 'red'});

@@ -93,6 +93,14 @@ require('./componentB');
 SmartCSS.injectStyles();
 ```
 
+**Generated CSS string**
+```css
+    .root1{background:red;}.root1:hover{background:green;}
+    .root2{background:yellow;}.colorBlue3{color:blue;}.root2:hover .link4{color:green;}
+```
+
+Notice how you have defined the "root" class twice but there is no conflict because this library automatically adds an id to have no conflicts.
+
 
 
 ## Features
