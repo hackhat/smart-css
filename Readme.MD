@@ -106,7 +106,6 @@ SmartCSS.injectStyles();
  - Integrates perfectly with the react.js way to thought;
  - You don't need to use the singleton to render the CSS;
  - Can handle transitions in react (yes, you can write custom class names);
- - No need to use a singleton to store styles;
 
 
 
