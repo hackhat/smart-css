@@ -332,8 +332,8 @@ _.extend(SmartCSS.prototype, {
                 }else{
                     className = '_' + className;
                 }
+                className += SmartCSS.__getNextId();
             }
-            className += SmartCSS.__getNextId();
         }
         if(!utils.isValidClassName(className)){
             throw new Error('Invalid class name');
