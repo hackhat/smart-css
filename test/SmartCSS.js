@@ -161,7 +161,7 @@ describe('SmartCSS', function(){
 
 
 
-        it('should allow hsl colors', function(){
+        it('should support hsl colors', function(){
             var css = new SmartCSS();
             css.setClass('.myClassName', {color: 'hsl(0, 100%, 50%)'});
             var expected = '.' + css.getClass('myClassName') + '{color:hsl(0, 100%, 50%);}';
@@ -171,7 +171,7 @@ describe('SmartCSS', function(){
 
 
 
-        it('should allow hex colors', function(){
+        it('should support hex colors', function(){
             var css = new SmartCSS();
             css.setClass('.myClassName', {color: '#FF0000'});
             var expected = '.' + css.getClass('myClassName') + '{color:#FF0000;}';
@@ -185,11 +185,11 @@ describe('SmartCSS', function(){
 
 
 
-
     describe('@media', function(){
 
 
-        it('should allow @media property', function(){
+
+        it('should support @media property', function(){
             var css = new SmartCSS();
             var def = {color: 'red'};
             css.setClass('.myClassName', def, {media: '(max-width: 500px)'});
@@ -198,7 +198,9 @@ describe('SmartCSS', function(){
             expect(current).to.be.equal(expected);
         })
 
-        it('should allow complex @media', function(){
+
+
+        it('should support complex @media', function(){
             var css = new SmartCSS();
             var def = {color: 'red'};
             css.setClass('.myClassName', def, {media: '(min-width: 700px) and (orientation: landscape)'});
@@ -209,7 +211,7 @@ describe('SmartCSS', function(){
 
 
 
-        it('should allow more than one @media property on the same selector', function(){
+        it('should support more than one @media property on the same selector', function(){
             var css = new SmartCSS();
             var def1 = {color: 'red'};
             var def2 = {color: 'green'};
@@ -224,23 +226,31 @@ describe('SmartCSS', function(){
 
 
 
-    // RCSS: automatically adds quotes.
-    it('should allow proper content variable', function(){
-        var css = new SmartCSS({});
-        css.setClass('.a', {content: 'attr(data-hover)'});
-        var expected = '.' + css.getClass('a') + '{content:attr(data-hover);}';
-        var current  = SmartCSS.getStylesAsString();
-        expect(current).to.be.equal(expected);
-    })
+    describe('content property', function(){
 
 
 
-    it('should allow proper content property as string', function(){
-        var css = new SmartCSS({});
-        css.setClass('.a', {content: '"string"'});
-        var expected = '.' + css.getClass('a') + '{content:"string";}';
-        var current  = SmartCSS.getStylesAsString('a');
-        expect(current).to.be.equal(expected);
+        // RCSS: automatically adds quotes.
+        it('should allow proper content variable', function(){
+            var css = new SmartCSS({});
+            css.setClass('.a', {content: 'attr(data-hover)'});
+            var expected = '.' + css.getClass('a') + '{content:attr(data-hover);}';
+            var current  = SmartCSS.getStylesAsString();
+            expect(current).to.be.equal(expected);
+        })
+
+
+
+        it('should allow proper content property as string', function(){
+            var css = new SmartCSS({});
+            css.setClass('.a', {content: '"string"'});
+            var expected = '.' + css.getClass('a') + '{content:"string";}';
+            var current  = SmartCSS.getStylesAsString('a');
+            expect(current).to.be.equal(expected);
+        })
+
+
+
     })
 
 
