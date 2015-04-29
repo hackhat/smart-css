@@ -155,10 +155,47 @@ Notice how you have defined the "root" class twice but there is no conflict beca
 
 
 
-# More examples
+# Cookbook (specific examples)
 
 
-### Add a hover style
+
+### Get classes
+
+There are 2 ways to get classes. If you need only one then `getClass` is the best:
+
+```javascript
+css.setClass('.a', {
+    background: 'red'
+})
+// In your render()
+React.DOM.div({
+    className: css.getClass('a');
+})
+```
+
+If you need more than one class then you can use this syntax:
+
+```javascript
+css.setClass('.a', {
+    background: 'red'
+})
+css.setClass('.b', {
+    color: 'white'
+})
+// In your render()
+React.DOM.div({
+    className: css.getClasses({
+        a: true,
+        b: true
+    })
+})
+```
+
+Notice how you can set each class to true or false. This allows you to integrate logic very easily in your view styles.
+
+
+
+### Add a hover style ([pseudo classes](https://developer.mozilla.org/en-US/docs/Web/CSS/Pseudo-classes))
 
 When you hover over the element with the class id ".root" it will change the background from red to blue.
 
@@ -217,6 +254,32 @@ css.setClass('.root', {
 The above code will create the css class name `.my-root`. This should be used for react transitions.
 
 
+### Media property
+
+```javascript
+css.setClass('.myClassName', {
+    background: 'red'
+}, {
+    media: 'max-width: 500px'
+});
+css.setClass('.myClassName', {
+    background: 'blue'
+}, {
+    media: 'min-width: 500px'
+});
+```
+
+
+### Use a [pseudo element](https://developer.mozilla.org/en-US/docs/Web/CSS/Pseudo-elements) (like ::after, ::before)
+
+```javascript
+css.setClass('.root', {
+})
+css.setClass('.root::after', {
+    content: '"test"'
+})
+```
+
 
 ### Content
 
@@ -237,6 +300,71 @@ css.setClass('.root', {
 ```
 
 Notice how the function doesn't have the extra `"`.
+
+
+### Generate a more compressed CSS class names
+
+There is a debug flag when you instance the SmartCSS. Turn it off in production mode, by default is true.
+
+```javascript
+var css = new SmartCSS({debug: false});
+```
+
+
+
+### Add prefix to the class names generated
+
+Sometimes is easier to debug if you have a prefix on your styles based on the component.
+
+```javascript
+var css = new SmartCSS({
+    name: 'componentA'
+});
+css.setClass('.root', {
+    background: 'red'
+})
+```
+
+The output will include the "componentA" string in the generated class name.
+
+
+### Tinycolor
+
+If you use tinycolor to create colors in JavaScript then you might find a pain to convert the tinycolor instance to a string. Because of this there is a helper which will automatically convert it to a HSL string.
+
+```javascript
+css.setClass('.root', {
+    background   : tinycolor('red'),
+    borderBottom : ['1px solid', tinycolor('blue')]
+})
+```
+
+Notice how you added a background without using the `tinycolor('red').toHslString()` method. Another interesting point is using the array to define the `borderBottom`. If you use an array then it will be able to convert the `tinycolor('blue')` to a HSL string automatically.
+
+Here would be an example without this feature (DON'T DO IT THIS WAY):
+
+```javascript
+css.setClass('.root', {
+    background   : tinycolor('red').toHslString(),
+    borderBottom : '1px solid ' + tinycolor('blue').toHslString()
+})
+```
+
+Notice how much more code you write?
+You can also define your colors with HEX or HSL syntax.
+
+
+### More dynamic styles
+
+Sometimes you might want a dynamic color. But this library already compiles all the CSS at runtime in one batch and there is no way to change existing styles. In order to add a dynamic property you need to use in-line styles like this:
+
+```javascript
+React.DOM.div({
+    style: {
+        backgroundColor: this.user.color
+    }
+})
+```
 
 
 
