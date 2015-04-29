@@ -4,7 +4,7 @@
 
 Write CSS in JavaScript with namespaces, proper names, no conflicts and expected results for react.js. ([Why writing CSS in JS is better than SCSS or CSS files?](https://speakerdeck.com/vjeux/react-css-in-js))
 
-Read the **[API](https://rawgit.com/hackhat/smart-css/v1.0.2/docs/jsduck/index.html)**, or check out an [example](https://github.com/hackhat/fluxmax-smart-css/tree/ui-test).
+Read the **[API](https://rawgit.com/hackhat/smart-css/v1.0.2/docs/jsduck/index.html)**, check out an [example](https://github.com/hackhat/fluxmax-smart-css/tree/ui-test) or the [cookbook recipes](#cookbook-recipes-specific-examples).
 
 
 
