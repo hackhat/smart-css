@@ -155,7 +155,7 @@ Notice how you have defined the "root" class twice but there is no conflict beca
 
 
 
-# Cookbook (specific examples)
+## Cookbook recipes (specific examples)
 
 
 
