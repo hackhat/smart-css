@@ -9,6 +9,36 @@ Read the **[API](https://rawgit.com/hackhat/smart-css/v1.0.2/docs/jsduck/index.h
 [Example](https://github.com/hackhat/fluxmax-smart-css/tree/ui-test).
 
 
+## Quick example
+
+```javascript
+var SmartCSS = require('smart-css');
+var css      = new SmartCSS();
+var React    = require('react');
+
+css.setClass('.button', {
+    background: 'red'
+})
+
+var comp = React.DOM.button({
+    className: css.getClass('button')
+}, 'press-me')
+
+// This will inject a `<style>` tag in the head of the document 
+// and it will add the following CSS:
+// `.button0{background:red}`
+SmartCSS.injectStyles();
+
+React.renderComponent(comp, document.body);
+```
+
+**Generated CSS**
+```css
+.button0{background:red}
+```
+
+
+
 ## Get started
 
 Is very easy to get started:
