@@ -2,7 +2,7 @@
 
 # smart-css [![Build Status](https://travis-ci.org/hackhat/smart-css.svg?branch=prod)](https://travis-ci.org/hackhat/smart-css) [![Coverage Status](https://coveralls.io/repos/hackhat/smart-css/badge.svg?branch=prod)](https://coveralls.io/r/hackhat/smart-css?branch=prod)
 
-Write CSS in JavaScript with namespaces, proper names, no conflicts and expected results for react.js. 
+Write CSS in JavaScript with namespaces, proper names, no conflicts and expected results for react.js. ([Why writing CSS in JS is better than SCSS or CSS files?](https://speakerdeck.com/vjeux/react-css-in-js))
 
 Read the **[API](https://rawgit.com/hackhat/smart-css/v1.0.2/docs/jsduck/index.html)**.
 
