@@ -155,7 +155,12 @@ Notice how you have defined the "root" class twice but there is no conflict beca
 
 
 
+# More examples
+
+
 ### Add a hover style
+
+When you hover over the element with the class id ".root" it will change the background from red to blue.
 
 ```javascript
 css.setClass('.root', {
@@ -165,6 +170,73 @@ css.setClass('.root:hover', {
     background: 'blue'
 })
 ```
+
+
+### Add a hover style on parent
+
+When you hover over the element with the class id `.root` it will change the background of the child element with class id `.a` from red to blue.
+
+You have to define both `.root` and `.a` before using the `.root:hover .a` tag.
+
+```javascript
+css.setClass('.root', {
+})
+css.setClass('.a', {
+    background: 'red'
+})
+css.setClass('.root:hover .a', {
+    background: 'blue'
+})
+```
+
+
+### No need to use the singleton to create the CSS string
+
+As you might already know, singletons are a bad practice in software design. This leads to unexpected bugs which can propagate in unexpected ways. In order to avoid this bad design you can use child contexts. Here the `injectStyles` method injects the styles of the `cssParent` and `cssChild` css instances.
+
+```javascript
+var cssParent = new SmartCSS({});
+cssParent.setClass('.a', {color: 'red'});
+var cssChild = new SmartCSS({});
+cssChild.setClass('.a', {color: 'red'});
+cssParent.addChildContext(cssChild);
+cssParent.injectStyles();
+```
+
+
+### Force class name
+
+Sometimes you might want to force a custom class name. Notice that a class name is automatically generated and you only specify the class id by default.
+
+```javascript
+css.setClass('.root', {
+    background: 'red'
+}, {className: 'my-root'})
+```
+
+The above code will create the css class name `.my-root`. This should be used for react transitions.
+
+
+
+### Content
+
+If you want to add some nice effects with buttons like [these](http://codepen.io/seansean11/pen/wHIae) you need to use the `content` property. Because sometimes the value of the property can be a string and other times can be a function then you need to add `"`  around your strings.
+
+```javascript
+css.setClass('.root', {
+    content: '"a string"'
+})
+```
+
+If you want a function then you do this:
+
+```javascript
+css.setClass('.root', {
+    content: 'attr(data-icon)'
+})
+```
+
+Notice how the function doesn't have the extra `"`.
 
 
 
