@@ -1,5 +1,7 @@
 # smart-css [![Build Status](https://travis-ci.org/hackhat/smart-css.svg?branch=prod)](https://travis-ci.org/hackhat/smart-css) [![Coverage Status](https://coveralls.io/repos/hackhat/smart-css/badge.svg?branch=prod)](https://coveralls.io/r/hackhat/smart-css?branch=prod)
 
+[![Join the chat at https://gitter.im/hackhat/smart-css](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/hackhat/smart-css?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 Write CSS in JavaScript with namespaces, proper names, no conflicts and expected results for react.js. 
 
 Read the **[API](https://rawgit.com/hackhat/smart-css/v1.0.1/docs/jsduck/index.html)**.
