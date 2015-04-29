@@ -60,12 +60,18 @@ var SmartCSS = function(options){
     this.__childContexts = [];
 
     /**
-     * The key is the styleName and the value is an object like this:
-     * `{className: 'String', style: {color: 'red'}}`
+     * An array of StyleClass instances.
+     * @type {StyleClass[]}
+     * @private
+     */
+    this.__styleClasses = [];
+
+    /**
+     * The key is the styleName + @media query and the value is an instance of StyleClass.
      * @type {Object}
      * @private
      */
-    this.__styleClasses = {};
+    this.__styleClassesByUID = [];
 
     /**
      * The key is classId and maps to a className.
@@ -212,7 +218,7 @@ _.extend(SmartCSS.prototype, {
      * @return {Array} An array with all the style classes added.
      */
     getStyleClasses: function(){
-        return _.values(this.__styleClasses);
+        return this.__styleClasses.slice(0);
     },
 
 
@@ -285,13 +291,14 @@ _.extend(SmartCSS.prototype, {
      * @param {String} name The style name, then you can get the style id with `getClass` or `getClasses`.
      * @param {Object} def The style definition `{color: 'red'}` as javascript object.
      * @param {Object} options
-     * @param {String} options.className
-     * @param {String} options.hover
-     * @param {String} options.media
+     * @param {String} options.className A class name to overwrite the generated one.
+     * @param {String} options.media Media query.
      */
     setClass: function(selector, styleDef, options){
-        if(this.__styleClasses[selector]){
-            throw new Error('Class id already exists for this selector')
+        options = options || {};
+        var UID = StyleClass.createUID(selector, options.media);
+        if(this.__styleClassesByUID[UID]){
+            throw new Error('Class id already exists for this selector and media');
         }
         // Converts the selector string to a JavaScript object so its easier to
         // understand what the user defines.
@@ -314,8 +321,8 @@ _.extend(SmartCSS.prototype, {
             className = '';
             // If a class with the same classId has been defined then reuse
             // its className so :hover and other pseudo things works correctly.
-            if(this.__styleClasses[classId]){
-                className = this.__styleClasses[classId].getClassName();
+            if(this.__classNameMap[classId]){
+                className = this.__classNameMap[classId];
             }else{
                 if(this.__debug){
                     className += classId;
@@ -341,7 +348,8 @@ _.extend(SmartCSS.prototype, {
             media          : options.media,
         })
         this.__classNameMap[classId] = className;
-        this.__styleClasses[selector] = styleClass;
+        this.__styleClassesByUID[styleClass.getUID()] = styleClass;
+        this.__styleClasses.push(styleClass);
         return this.__styleClasses[selector];
     },
 

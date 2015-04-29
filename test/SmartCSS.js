@@ -196,6 +196,20 @@ describe('SmartCSS', function(){
 
 
 
+    it('should allow more than one @media property on the same selector', function(){
+        var css = new SmartCSS();
+        var def1 = {color: 'red'};
+        var def2 = {color: 'green'};
+        css.setClass('.myClassName', def1, {media: 'max-width: 500px'});
+        css.setClass('.myClassName', def2, {media: 'min-width: 500px'});
+        var expected = '@media (max-width: 500px){.' + css.getClass('myClassName') + '{color:red;}}' +
+                       '@media (min-width: 500px){.' + css.getClass('myClassName') + '{color:green;}}';
+        var current  = SmartCSS.getStylesAsString();
+        expect(current).to.be.equal(expected);
+    })
+
+
+
     // RCSS: automatically adds quotes.
     it('should allow proper content variable', function(){
         var css = new SmartCSS({});
@@ -260,7 +274,15 @@ describe('SmartCSS', function(){
     it('should throw an error if the same class id and object selector is set', function(){
         var css = new SmartCSS({});
         css.setClass('.a', {color: 'red'})
-        expect(css.setClass.bind(css, '.a', {color: 'red'})).to.throw(Error, 'Class id already exists for this selector');
+        expect(css.setClass.bind(css, '.a', {color: 'red'})).to.throw(Error, 'Class id already exists for this selector and media');
+    })
+
+
+
+    it('should not throw an error if the same class id and object selector is set', function(){
+        var css = new SmartCSS({});
+        css.setClass('.a', {color: 'red'}, {media: 'min-width: 500px'})
+        expect(css.setClass.bind(css, '.a', {color: 'red'}, {media: 'max-width: 500px'})).not.to.throw(Error, 'Class id already exists for this selector and media');
     })
 
 

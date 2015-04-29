@@ -11,7 +11,8 @@ var _ = require('lodash');
  * @param {Object} options
  * @param {String} options.className Class name that will be set in your html.
  * @param {Object} options.styleDef Style definition.
- * @param {Object} options.selectorObject Rule header as object.
+ * @param {Object} options.selectorObject Selector as object.
+ * @param {String} options.selectorString Selector as string.
  * @param {String} options.media Media string for this style.
  */
 var StyleClass = function(options){
@@ -19,12 +20,22 @@ var StyleClass = function(options){
         className      : void 0,
         styleDef       : void 0,
         selectorObject : void 0,
+        selectorString : void 0,
         media          : void 0,
     }, options);
     this.__className      = options.className;
     this.__styleDef       = options.styleDef;
     this.__media          = options.media;
     this.__selectorObject = options.selectorObject;
+    this.__selectorString = options.selectorString;
+}
+
+
+
+
+
+StyleClass.createUID = function(selector, media){
+    return selector + '|' + media
 }
 
 
@@ -32,6 +43,16 @@ var StyleClass = function(options){
 
 
 _.extend(StyleClass.prototype, {
+
+
+
+    /**
+     * Creates a unique id for this style class.
+     * @return {String} Return its unique id.
+     */
+    getUID: function(){
+        return StyleClass.createUID(this.__selectorString, this.__media);
+    },
 
 
 
