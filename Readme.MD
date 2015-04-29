@@ -1,6 +1,6 @@
 ![smart-css](./docs/repo-header.jpg)
 
-# smart-css [![Build Status](https://travis-ci.org/hackhat/smart-css.svg?branch=prod)](https://travis-ci.org/hackhat/smart-css) [![Coverage Status](https://coveralls.io/repos/hackhat/smart-css/badge.svg?branch=prod)](https://coveralls.io/r/hackhat/smart-css?branch=prod)
+[![Build Status](https://travis-ci.org/hackhat/smart-css.svg?branch=prod)](https://travis-ci.org/hackhat/smart-css) [![Coverage Status](https://coveralls.io/repos/hackhat/smart-css/badge.svg?branch=prod)](https://coveralls.io/r/hackhat/smart-css?branch=prod) [![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/hackhat/smart-css?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 
 Write CSS in JavaScript with namespaces, proper names, no conflicts and expected results for react.js. ([Why writing CSS in JS is better than SCSS or CSS files?](https://speakerdeck.com/vjeux/react-css-in-js))
 
@@ -106,7 +106,7 @@ SmartCSS.injectStyles();
  - Integrates perfectly with the react.js way to thought;
  - You don't need to use the singleton to render the CSS;
  - Can handle transitions in react (yes, you can write custom class names);
-
+ - Works on node.js;
 
 
 ## Roadmap
