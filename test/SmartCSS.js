@@ -185,27 +185,41 @@ describe('SmartCSS', function(){
 
 
 
-    it('should allow @media property', function(){
-        var css = new SmartCSS();
-        var def = {color: 'red'};
-        css.setClass('.myClassName', def, {media: 'max-width: 500px'});
-        var expected = '@media (max-width: 500px){.' + css.getClass('myClassName') + '{color:red;}}';
-        var current  = SmartCSS.getStylesAsString();
-        expect(current).to.be.equal(expected);
-    })
+
+    describe('@media', function(){
+
+
+        it('should allow @media property', function(){
+            var css = new SmartCSS();
+            var def = {color: 'red'};
+            css.setClass('.myClassName', def, {media: '(max-width: 500px)'});
+            var expected = '@media (max-width: 500px){.' + css.getClass('myClassName') + '{color:red;}}';
+            var current  = SmartCSS.getStylesAsString();
+            expect(current).to.be.equal(expected);
+        })
+
+        it('should allow complex @media', function(){
+            var css = new SmartCSS();
+            var def = {color: 'red'};
+            css.setClass('.myClassName', def, {media: '(min-width: 700px) and (orientation: landscape)'});
+            var expected = '@media (min-width: 700px) and (orientation: landscape){.' + css.getClass('myClassName') + '{color:red;}}';
+            var current  = SmartCSS.getStylesAsString();
+            expect(current).to.be.equal(expected);
+        })
 
 
 
-    it('should allow more than one @media property on the same selector', function(){
-        var css = new SmartCSS();
-        var def1 = {color: 'red'};
-        var def2 = {color: 'green'};
-        css.setClass('.myClassName', def1, {media: 'max-width: 500px'});
-        css.setClass('.myClassName', def2, {media: 'min-width: 500px'});
-        var expected = '@media (max-width: 500px){.' + css.getClass('myClassName') + '{color:red;}}' +
-                       '@media (min-width: 500px){.' + css.getClass('myClassName') + '{color:green;}}';
-        var current  = SmartCSS.getStylesAsString();
-        expect(current).to.be.equal(expected);
+        it('should allow more than one @media property on the same selector', function(){
+            var css = new SmartCSS();
+            var def1 = {color: 'red'};
+            var def2 = {color: 'green'};
+            css.setClass('.myClassName', def1, {media: '(max-width: 500px)'});
+            css.setClass('.myClassName', def2, {media: '(min-width: 500px)'});
+            var expected = '@media (max-width: 500px){.' + css.getClass('myClassName') + '{color:red;}}' +
+                           '@media (min-width: 500px){.' + css.getClass('myClassName') + '{color:green;}}';
+            var current  = SmartCSS.getStylesAsString();
+            expect(current).to.be.equal(expected);
+        })
     })
 
 

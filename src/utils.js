@@ -45,7 +45,7 @@ utils.renderStyleClass = function(styleClass, classNamesAsMap){
     var styleFull = styleHeader + '{' + styleBody + '}';
     var media = styleClass.getMedia();
     if(media){
-        styleFull = '@media (' + media + '){' + styleFull + '}'
+        styleFull = '@media ' + media + '{' + styleFull + '}'
     }
     return styleFull;
 }
