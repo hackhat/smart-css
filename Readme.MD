@@ -6,7 +6,7 @@ Write CSS in JavaScript with namespaces, proper names, no conflicts and expected
 
 Read the **[API](https://rawgit.com/hackhat/smart-css/v1.1.0/docs/jsduck/index.html)**, check out an [example](https://github.com/hackhat/fluxmax-smart-css/tree/ui-test) or the [cookbook recipes](#cookbook-recipes-specific-examples).
 
-
+Has been mentioned on [styling in react](http://survivejs.com/webpack_react/styling_react/#smart-css). 
 
 ## Quick example
 
