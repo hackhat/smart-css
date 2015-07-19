@@ -13,7 +13,7 @@
     "javascript"
   ],
   "author": "hackhat",
-  "license": "ISC",
+  "license": "BSD-3-Clause",
   "dependencies": {
     "coveralls": "^2.11.2",
     "lodash": "^3.3.1",
