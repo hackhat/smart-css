@@ -1,4 +1,4 @@
-var SmartCSS  = require('../src/core/SmartCSS');
+var SmartCSS  = require('../../src/core/SmartCSS');
 var expect    = require('chai').expect;
 var _         = require('lodash');
 var tinycolor = require('tinycolor2');
