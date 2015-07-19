@@ -15,9 +15,7 @@
   "author": "hackhat",
   "license": "BSD-3-Clause",
   "dependencies": {
-    "coveralls": "^2.11.2",
     "lodash": "^3.3.1",
-    "mocha-lcov-reporter": "0.0.2",
     "slick": "^1.12.1",
     "tinycolor2": "^1.1.2"
   },
@@ -26,6 +24,8 @@
     "url": "https://github.com/hackhat/smart-css.git"
   },
   "devDependencies": {
+    "coveralls": "^2.11.2",
+    "mocha-lcov-reporter": "0.0.2",
     "chai": "^2.2.0",
     "mocha": "^2.2.4"
   }
