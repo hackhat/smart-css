@@ -1,10 +1,10 @@
 ![smart-css](./docs/repo-header.jpg)
 
-[![Build Status](https://travis-ci.org/hackhat/smart-css.svg?branch=prod)](https://travis-ci.org/hackhat/smart-css) [![Coverage Status](https://coveralls.io/repos/hackhat/smart-css/badge.svg?branch=prod)](https://coveralls.io/r/hackhat/smart-css?branch=prod) [![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/hackhat/smart-css?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
+[![Build Status](https://travis-ci.org/hackhat/smart-css.svg?branch=v1.1.1)](https://travis-ci.org/hackhat/smart-css) [![Coverage Status](https://coveralls.io/repos/hackhat/smart-css/badge.svg?branch=v1.1.1)](https://coveralls.io/r/hackhat/smart-css?branch=prod) [![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/hackhat/smart-css?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 
 Write CSS in JavaScript with namespaces, proper names, no conflicts and expected results for react.js. ([Why writing CSS in JS is better than SCSS or CSS files?](https://speakerdeck.com/vjeux/react-css-in-js))
 
-Read the **[API](https://rawgit.com/hackhat/smart-css/v1.1.0/docs/jsduck/index.html)**, check out an [example](https://github.com/hackhat/fluxmax-smart-css/tree/ui-test) or the [cookbook recipes](#cookbook-recipes-specific-examples).
+Read the **[API](https://rawgit.com/hackhat/smart-css/v1.1.1/docs/jsduck/index.html)**, check out an [example](https://github.com/hackhat/fluxmax-smart-css/tree/ui-test) or the [cookbook recipes](#cookbook-recipes-specific-examples).
 
 Has been mentioned on [styling in react](http://survivejs.com/webpack_react/styling_react/#smart-css). 
 
